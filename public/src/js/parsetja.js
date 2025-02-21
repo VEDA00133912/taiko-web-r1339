@@ -31,7 +31,9 @@
 			"8": {name: false, txt: false},
 			"9": {name: "balloon", txt: strings.note.balloon},
 			"A": {name: "daiDon", txt: strings.note.daiDon},
-			"B": {name: "daiKa", txt: strings.note.daiKa}
+			"B": {name: "daiKa", txt: strings.note.daiKa},
+			"F": {name: "adlib", txt: false},
+			"G": {name: "green", txt: strings.note.green}
 		}
 		this.noteTypes_ex = strings.ex_note;
 		this.courseTypes = {
@@ -558,7 +560,7 @@
 						case "0":
 							insertBlankNote()
 							break
-						case "1": case "2": case "3": case "4": case "A": case "B":
+						case "1": case "2": case "3": case "4": case "A": case "B": case "F": case "G":
 							var type = this.noteTypes[symbol]
 							var circleObj = {
 								type: type.name,

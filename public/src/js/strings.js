@@ -37,21 +37,21 @@ var translations = {
 		ko: "태고 웹"
 	},
 	titleProceed: {
-		ja: "クリックするかEnterを押す！",
+		ja: "画面をタップかEnterを押してスタート！",
 		en: "Click or Press Enter!",
 		cn: "点击或按回车！",
 		tw: "點擊或按確認！",
 		ko: "클릭하거나 Enter를 누르세요!"
 	},
 	titleDisclaimer: {
-		ja: "この非公式シミュレーターはバンダイナムコとは関係がありません。",
+		ja: "太鼓ウェブは非公式シミュレータです。バンダイナムコとは一切関係ありません",
 		en: "This unofficial simulator is unaffiliated with BANDAI NAMCO.",
 		cn: "这款非官方模拟器与BANDAI NAMCO无关。",
 		tw: "這款非官方模擬器與 BANDAI NAMCO 無關。",
 		ko: "이 비공식 시뮬레이터는 반다이 남코와 관련이 없습니다."
 	},
 	titleCopyright: {
-		en: "Taiko no Tatsujin ©&™ 2011 BANDAI NAMCO Entertainment Inc."
+		en: "Taiko no Tatsujin ©&™ 2025 BANDAI NAMCO Entertainment Inc."
 	},
 	selectSong: {
 		ja: "曲をえらぶ",
@@ -136,6 +136,27 @@ var translations = {
 		cn: "网络对战",
 		tw: "網上對打",
 		ko: "온라인 대전"
+	},
+	baisoku: {
+		ja: "ばいそく",
+		en: "baisoku",
+		cn: "倍速",
+		tw: "倍速",
+		ko: "배속"
+	},
+	sanbai: {
+		ja: "さんばい",
+		en: "sanbai",
+		cn: "3倍速",
+		tw: "3倍速",
+		ko: "3배속"
+	},
+	yonbai: {
+		ja: "よんばい",
+		en: "yonbai",
+		cn: "4倍速",
+		tw: "4倍速",
+		ko: "4배속"
 	},
 	easy: {
 		ja: "かんたん",
@@ -294,6 +315,13 @@ var translations = {
 			tw: "氣球",
 			ko: "풍선"
 		},
+		green: {
+			ja: "グリーン",
+			en: "Green",
+			cn: "绿",
+			tw: "绿",
+			ko: "녹색"
+		}
 	},
 	ex_note: {
 		don: {
@@ -809,7 +837,7 @@ var translations = {
 				ko: "가사 표시하기"
 			}
 		},
-		showBpm: {
+        showBpm: {
             name: {
                 ja: "BPMの表示",
                 en: "Show BPM",
@@ -1096,6 +1124,13 @@ var translations = {
 				ch: "标题颜色",
 				tw: "標題的顏色",
 				ko: "칭호 색상"
+			},
+			reset: {
+				ja: "リセット",
+				en: "Reset",
+				tw: "重設",
+				cn: "重置",
+				ko: "초기화"
 			}
 		},
 		customdon: {
@@ -1195,6 +1230,12 @@ var translations = {
 			en: "Cannot use this name, please check that your new name is at most 25 characters long",
 			tw: "無法使用此名稱。名稱最多不能超過 25 個字。",
 			ko: "해당 닉네임을 사용할 수 없습니다. 닉네임의 길이가 25자 미만인지 확인하시기 바랍니다."
+		},
+		invalid_rank_name: {
+			ja: "この名前は使用できません。新しい名前が30文字以下であることを確認してください",
+			en: "Cannot use this name, please check that your new name is at most 30 characters long",
+			tw: "無法使用此名稱。名稱最多不能超過 30 個字。",
+			ko: "해당 닉네임을 사용할 수 없습니다. 닉네임의 길이가 30자 미만인지 확인하시기 바랍니다."
 		},
 		invalid_don: {
 			ja: "マイどんを保存できませんでした",
@@ -1468,15 +1509,15 @@ var translations = {
 		tips: {
 			ja: [
 				"CTRL+Fで検索窓を開く!",
-				"検索フィルタの組み合わせは自由自在です！",
-				"キーワードでジャンルを絞り込めます！(例: \"genre:variety\", \"genre:namco\")",
-				"「oni:10」などのフィルターを使用して、特定の難易度の曲を検索して！",
-				"Difficulty filters support ranges, too! Try \"ura:1-5\"!",
-				"Want to see your full combos? Try \"gold:any\", \"gold:oni\", etc.!",
-				"Only want to see creative songs? Use the \"creative:yes\" filter!",
-				"Find songs with lyrics enabled with the \"lyrics:yes\" filter!",
-				"Feel like trying something new? Use the \"played:no\" filter to only see songs you haven't played yet!",
-				"Looking for creative courses from a specific creator? Use the \"maker:<name>\" filter!",
+				"検索フィルタの組み合わせは自由自在！",
+				"キーワードでジャンルを絞り込めます！(例: 「genre:variety」, 「genre:namco」)",
+				"「oni:10」などのフィルターを使用して、特定の難易度の曲を検索してね！",
+				"難易度フィルタはレベル範囲もサポートしています！ 「ura:1-5」 のように検索してね！",
+				"フルコンボしている曲を見るには 「gold:any」 や, 「gold:oni」 のように検索してね！",
+				"創作譜面だけを見たい場合は 「creative:yes」 をしてみてね！",
+				"歌詞がある曲だけを見たい場合は 「lyrics:yes」 で検索してね！",
+				" 「played:no」 を使うことでまだプレイしていない曲だけを表示できるよ！",
+				"特定の人の創作譜面をお探しかな？ 「maker:その人の名前」 で表示できるよ！",
 			],
 			en: [
 				"Open the search window by pressing CTRL+F!",

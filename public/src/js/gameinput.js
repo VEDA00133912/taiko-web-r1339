@@ -177,7 +177,13 @@ class GameInput{
 			var currentTime = this.keyTime[name]
 			this.keyTime[sound] = currentTime
 			if(circle && !circle.isPlayed){
-				if(circle.type === "balloon"){
+				if(circle.type === "adlib"){
+					var relative = Math.abs(currentTime - circle.ms)
+					if(relative < this.game.rules.ok){
+						this.controller.playSound("se_hidden")
+						return
+					}
+				}else if(circle.type === "balloon"){
 					if(sound === "don" && circle.requiredHits - circle.timesHit <= 1){
 						this.controller.playSound("se_balloon")
 						return

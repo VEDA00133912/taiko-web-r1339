@@ -349,6 +349,13 @@ class Scoresheet{
 			var elapsed = 0
 		}
 		
+		var showAdlib = false
+				for(var p = 0; p < players; p++){
+					var results = this.results[p]
+					if(results.adlibTotal > 0){
+						showAdlib = true
+					}
+				}
 		var rules = this.controller.game.rules
 		var failedOffset = rules.clearReached(this.results[this.player[0]].gauge) ? 0 : -2000
 		if(players === 2 && failedOffset !== 0){
@@ -479,7 +486,7 @@ class Scoresheet{
 						var name = p2.name || defaultName;
 						var rank = !p2.session ? (gameConfig.accounts ? strings.notLoggedIn : false) : false;
 					}
-
+					
 					this.nameplateCache.get({
 						ctx: ctx,
 						x: 259,
@@ -613,6 +620,27 @@ class Scoresheet{
 						{outline: "#000", letterBorder: 8},
 						{fill: "#ffc700"}
 					])
+					if(showAdlib){
+						this.draw.score({
+							ctx: ctx,
+							score: "adlib",
+							x: 1149,
+							y: 273,
+							results: true
+						})
+						this.draw.layeredText({
+							ctx: ctx,
+							text: "%",
+							x: 971 + 270,
+							y: 196 + 80,
+							fontSize: 26,
+							fontFamily: this.numbersFont,
+							align: "right"
+						}, [
+							{outline: "#000", letterBorder: 9},
+							{fill: "#fff"}
+						])
+					}
 				}
 				ctx.restore()
 			})
@@ -746,6 +774,9 @@ class Scoresheet{
 			ctx.translate(frameLeft, frameTop)
 			
 			var printNumbers = ["good", "ok", "bad", "maxCombo", "drumroll"]
+			if(showAdlib){
+				printNumbers.push("adlib")
+			}
 			if(!this.state["countupTime0"]){
 				var times = {}
 				var lastTime = 0
@@ -767,7 +798,12 @@ class Scoresheet{
 							continue
 						}
 						times[printNumbers[i]] = lastTime + 500
-						var currentTime = lastTime + 500 + results[printNumbers[i]].length * 30 * this.frame
+						if(printNumbers[i] === "adlib"){
+							var resultsNumber = (results.adlibTotal > 0 ? Math.floor(results.adlib / results.adlibTotal * 100) : 0).toString()
+						}else{
+							var resultsNumber = results[printNumbers[i]]
+						}
+						var currentTime = lastTime + 500 + resultsNumber.length * 30 * this.frame						
 						if(currentTime > largestTime){
 							largestTime = currentTime
 						}
@@ -820,14 +856,20 @@ class Scoresheet{
 				
 				for(var i in printNumbers){
 					var start = this.state["countupTime" + p][printNumbers[i]]
+					var isAdlib = printNumbers[i] === "adlib"
+					if(isAdlib){
+						var resultsNumber = (results.adlibTotal > 0 ? Math.floor(results.adlib / results.adlibTotal * 100) : 0).toString()
+					}else{
+						var resultsNumber = results[printNumbers[i]]
+					}
 					this.draw.layeredText({
 						ctx: ctx,
-						text: this.getNumber(results[printNumbers[i]], start, elapsed),
-						x: 971 + 270 * Math.floor(i / 3),
+						text: this.getNumber(resultsNumber, start, elapsed),
+						x: 971 + 270 * Math.floor(i / 3)- (isAdlib ? 25 : 0),
 						y: 196 + (40 * (i % 3)),
 						fontSize: 26,
 						fontFamily: this.numbersFont,
-						letterSpacing: 1,
+						letterSpacing: isAdlib ? -1 : 1,
 						align: "right"
 					}, [
 						{outline: "#000", letterBorder: 9},
@@ -938,8 +980,7 @@ class Scoresheet{
 			if(clearReached){
 				crown = this.resultsObj.bad === 0 ? (this.resultsObj.ok === 0 ? "rainbow" : "gold") : "silver"			}
 			if(!oldScore || oldScore.points <= this.resultsObj.points){
-				if(oldScore && (oldScore.crown === "rainbow" || oldScore.crown === "gold" && (crown === "silver" || !crown) || oldScore.crown === "silver" && !crown)){
-					crown = oldScore.crown
+				if(oldScore && (oldScore.crown === "rainbow" || oldScore.crown === "gold" && (crown === "silver" || !crown) || oldScore.crown === "silver" && !crown)){					crown = oldScore.crown
 				}
 				this.resultsObj.crown = crown
 				delete this.resultsObj.title
@@ -948,8 +989,7 @@ class Scoresheet{
 				scoreStorage.add(hash, difficulty, this.resultsObj, true, title).catch(() => {
 					this.showWarning = {name: "scoreSaveFailed"}
 				})
-			}else if(oldScore && ((crown === "rainbow" && oldScore.crown !== "rainbow") || crown === "gold" && (oldScore.crown === "silver"  ||!oldScore.crown) || crown && !oldScore.crown)){
-				oldScore.crown = crown
+			}else if(oldScore && ((crown === "rainbow" && oldScore.crown !== "rainbow") || crown === "gold" && (oldScore.crown === "silver"  ||!oldScore.crown) || crown && !oldScore.crown)){				oldScore.crown = crown
 				scoreStorage.add(hash, difficulty, oldScore, true, title).catch(() => {
 					this.showWarning = {name: "scoreSaveFailed"}
 				})

@@ -1235,14 +1235,14 @@
 	score(config){
 		var ctx = config.ctx
 		ctx.save()
-		
+	
 		ctx.translate(config.x, config.y)
 		if(config.scale){
 			ctx.scale(config.scale, config.scale)
 		}
 		ctx.strokeStyle = "#000"
 		ctx.lineWidth = 7
-		if(strings.good === "良"){
+		if(strings.good === "良" && config.score !== "adlib"){
 			if(config.align === "center"){
 				ctx.translate(config.score === "bad" ? -49 / 2 : -23 / 2, 0)
 			}
@@ -1299,26 +1299,35 @@
 				ctx.strokeText(strings.bad, 0, 4)
 				ctx.fillText(strings.bad, 0, 4)
 			}
+			else if(config.score === "adlib"){
+				if(config.results){
+					ctx.textAlign = "right"
+				}
+				ctx.strokeStyle = "#ef9100" 
+				ctx.fillStyle = "#fff" 
+				ctx.strokeText("AD-LIB", 0, 4)
+				ctx.fillText("AD-LIB", 0, 4)
+			}
 		}
 		ctx.restore()
 	}
 	
 	crown(config){
-		var ctx = config.ctx
-		ctx.save()
+		var ctx = config.ctx;
+		ctx.save();
 		
-		ctx.translate(config.x, config.y)
+		ctx.translate(config.x, config.y);
 		if(config.scale){
-			ctx.scale(config.scale, config.scale)
+			ctx.scale(config.scale, config.scale);
 		}
-		ctx.translate(-47, -39)
-		ctx.miterLimit = 1.7
+		ctx.translate(-47, -39);
+		ctx.miterLimit = 1.7;
 		
 		if(config.whiteOutline){
 			if(!this.crownCache.w){
-				this.crownCache.resize(140, 140, config.ratio)
+				this.crownCache.resize(140, 140, config.ratio);
 			}
-			var offset = 140 / 2 - 94 / 2
+			var offset = 140 / 2 - 94 / 2;
 			this.crownCache.get({
 				ctx: ctx,
 				x: -offset,
@@ -1327,49 +1336,49 @@
 				h: 140,
 				id: "crown"
 			}, ctx => {
-				ctx.save()
-				ctx.translate(offset, offset)
-				ctx.strokeStyle = "#fff"
-				ctx.lineWidth = 35
-				ctx.miterLimit = 1.7
-				ctx.filter = "blur(1.5px)"
-				ctx.stroke(this.crownPath)
-				ctx.restore()
-			})
+				ctx.save();
+				ctx.translate(offset, offset);
+				ctx.strokeStyle = "#fff";
+				ctx.lineWidth = 35;
+				ctx.miterLimit = 1.7;
+				ctx.filter = "blur(1.5px)";
+				ctx.stroke(this.crownPath);
+				ctx.restore();
+			});
 		}
 		
 		if(config.shine){
-			ctx.strokeStyle = "#fff"
-			ctx.lineWidth = 18
-			ctx.stroke(this.crownPath)
-			ctx.globalAlpha = 1 - config.shine
+			ctx.strokeStyle = "#fff";
+			ctx.lineWidth = 18;
+			ctx.stroke(this.crownPath);
+			ctx.globalAlpha = 1 - config.shine;
 		}
 		
-		ctx.strokeStyle = config.type ? "#000" : "#ffc616"
-		ctx.lineWidth = 18
-		ctx.stroke(this.crownPath)
+		ctx.strokeStyle = config.type ? "#000" : "#ffc616";
+		ctx.lineWidth = 18;
+		ctx.stroke(this.crownPath);
 		
 		if(config.shine){
-			ctx.globalAlpha = 1
-			ctx.fillStyle = "#fff"
-			ctx.fill(this.crownPath)
-			ctx.globalAlpha = 1 - config.shine
+			ctx.globalAlpha = 1;
+			ctx.fillStyle = "#fff";
+			ctx.fill(this.crownPath);
+			ctx.globalAlpha = 1 - config.shine;
 		}
 		
 		if(config.type){
 			var grd = ctx.createLinearGradient(0, 0, 94, 0)
 			if(config.type === "gold"){
-				grd.addColorStop(0, "#ffffc5")
-				grd.addColorStop(0.23, "#ffff44")
-				grd.addColorStop(0.53, "#efbd12")
-				grd.addColorStop(0.83, "#ffff44")
-				grd.addColorStop(1, "#efbd12")
-			}else if(config.type === "silver"){
-				grd.addColorStop(0, "#d6efef")
-				grd.addColorStop(0.23, "#bddfde")
-				grd.addColorStop(0.53, "#97c1c0")
-				grd.addColorStop(0.83, "#bddfde")
-				grd.addColorStop(1, "#97c1c0")
+				grd.addColorStop(0, "#ffffc5");
+				grd.addColorStop(0.23, "#ffff44");
+				grd.addColorStop(0.53, "#efbd12");
+				grd.addColorStop(0.83, "#ffff44");
+				grd.addColorStop(1, "#efbd12");
+			} else if(config.type === "silver"){
+				grd.addColorStop(0, "#d6efef");
+				grd.addColorStop(0.23, "#bddfde");
+				grd.addColorStop(0.53, "#97c1c0");
+				grd.addColorStop(0.83, "#bddfde");
+				grd.addColorStop(1, "#97c1c0");
 			} else if(config.type === "rainbow"){
 				grd.addColorStop(0,"#0000ff")
 				grd.addColorStop(0.15,"#00ffff")
@@ -1383,9 +1392,9 @@
 		} else {
 			ctx.fillStyle = "#ffdb2c";
 		}
-		ctx.fill(this.crownPath)
+		ctx.fill(this.crownPath);
 		
-		ctx.restore()
+		ctx.restore();
 	}
 	
 	gauge(config){
@@ -1668,11 +1677,11 @@
 		ctx.beginPath()
 		ctx.moveTo(r, 0)
 		this.roundedCorner(ctx, w, 0, r, 1)
-		ctx.lineTo(r, r)
+		ctx.lineTo(r, r)		
 		ctx.fillStyle = account?.loggedIn && account?.rank?.rank_color
 		? account.rank.rank_color
-		: (account?.loggedIn ? "#ecb158" : (config?.blue ? "#67cecb" : "#ff421d"));
-		ctx.fill()
+		: (account?.loggedIn ? "#ecb158" : (config?.blue ? "#67cecb" : "#ff421d"));	
+		ctx.fill();
 		ctx.beginPath()
 		ctx.moveTo(r, r)
 		this.roundedCorner(ctx, w, h, r, 2)
@@ -1693,10 +1702,11 @@
 		ctx.stroke()
 		ctx.beginPath()
 		ctx.arc(r, r, r, 0, pi * 2)
-		ctx.fillStyle = config.blue ? "#67cecb" : "#ff421d"
-		ctx.fill()
+		ctx.fillStyle = config.blue ? "#67cecb" : "#ff421d" // 1p,2p表示の色
+		ctx.fill() 
 		ctx.lineWidth = 4
 		ctx.stroke()
+		
 		ctx.font = this.bold(config.font) + "28px " + config.font
 		ctx.textAlign = "center"
 		ctx.textBaseline = "middle"
@@ -1704,6 +1714,7 @@
 		ctx.miterLimit = 1
 		ctx.strokeStyle = "#fff"
 		ctx.fillStyle = "#000"
+		
 		var text = config.blue ? "2P" : "1P"
 		ctx.strokeText(text, r + 2, r + 1)
 		ctx.fillText(text, r + 2, r + 1)
@@ -1719,9 +1730,10 @@
 				align: "center",
 				baseline: "middle"
 			}, [
-				{fill: "#000"}
+				{ fill: "#000" }
 			])
 		}
+		
 		this.layeredText({
 			ctx: ctx,
 			text: config.name || "",
@@ -1740,6 +1752,7 @@
 		
 		ctx.restore()
 	}
+	
 	
 	alpha(amount, ctx, callback, winW, winH){
 		if(amount >= 1){

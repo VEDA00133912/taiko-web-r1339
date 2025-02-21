@@ -2,13 +2,14 @@ class Controller{
 	constructor(...args){
 		this.init(...args)
 	}
-	init(selectedSong, songData, autoPlayEnabled, multiplayer, touchEnabled){
+	init(selectedSong, songData, autoPlayEnabled, multiplayer, touchEnabled,baisoku = 1){
 		this.selectedSong = selectedSong
 		this.songData = songData
 		this.autoPlayEnabled = autoPlayEnabled
 		this.saveScore = !autoPlayEnabled
 		this.multiplayer = multiplayer
 		this.touchEnabled = touchEnabled
+		this.baisoku = baisoku
 		if(multiplayer === 2){
 			this.snd = p2.player === 2 ? "_p1" : "_p2"
 			this.don = p2.don || defaultDon
@@ -44,7 +45,7 @@ class Controller{
 		}
 		this.offset = this.parsedSongData.soundOffset
 		
-		var maxCombo = this.parsedSongData.circles.filter(circle => ["don", "ka", "daiDon", "daiKa"].indexOf(circle.type) > -1 && (!circle.branch || circle.branch.name == "master")).length
+		var maxCombo = this.parsedSongData.circles.filter(circle => ["don", "ka", "daiDon", "daiKa", "green"].indexOf(circle.type) > -1 && (!circle.branch || circle.branch.name == "master")).length
 		if (maxCombo >= 50) {
 			var comboVoices = ["v_combo_50"].concat(Array.from(Array(Math.min(50, Math.floor(maxCombo / 100))), (d, i) => "v_combo_" + ((i + 1) * 100)))
 			var promises = []
@@ -83,8 +84,9 @@ class Controller{
 		
 		this.game = new Game(this, this.selectedSong, this.parsedSongData)
 		this.view = new View(this)
-		if (parseFloat(localStorage.getItem("baisoku") ?? "1", 10) !== 1) {
-			this.saveScore = false;
+		this.view = new View(this, baisoku)
+		if (this.view.baisoku > 1) {
+			this.saveScore = true;
 		}
 		this.mekadon = new Mekadon(this, this.game)
 		this.keyboard = new GameInput(this)
@@ -252,8 +254,8 @@ class Controller{
 			this.scoresheet = new Scoresheet(this, this.getGlobalScore(), this.multiplayer, this.touchEnabled)
 		}
 	}
-	displayScore(score, notPlayed, bigNote){
-		this.view.displayScore(score, notPlayed, bigNote)
+	displayScore(score, notPlayed, bigNote, adlib){
+		this.view.displayScore(score, notPlayed, bigNote, adlib)
 	}
 	songSelection(fadeIn, showWarning){
 		if(!fadeIn){
@@ -304,7 +306,7 @@ class Controller{
 					Promise.all(promises).then(resolve)
 				}
 			}).then(() => {
-				var taikoGame = new Controller(this.selectedSong, this.songData, this.autoPlayEnabled, false, this.touchEnabled)
+				var taikoGame = new Controller(this.selectedSong, this.songData, this.autoPlayEnabled, false, this.touchEnabled, this.baisoku)
 				taikoGame.run()
 			})
 		}

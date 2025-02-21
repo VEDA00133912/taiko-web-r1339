@@ -2,9 +2,10 @@
 	constructor(...args){
 		this.init(...args)
 	}
-	init(controller){
+	init(controller, baisoku = 1){
 		this.controller = controller
-		
+		this.baisoku = baisoku
+
 		this.canvas = document.getElementById("canvas")
 		this.ctx = this.canvas.getContext("2d")
 		var resolution = settings.getItem("resolution")
@@ -136,6 +137,7 @@
 				pageEvents.add(this.touchPauseBtn, "touchend", () => {
 					this.controller.togglePause()
 				})
+
 				if(this.multiplayer){
 					this.touchPauseBtn.style.display = "none"
 				}
@@ -338,7 +340,7 @@
 		}
 		
 		if(this.portrait){
-			// Portrait
+			// スマホ用
 			
 			if(!this.portraitClass){
 				this.portraitClass = true
@@ -366,7 +368,7 @@
 				w: 111,
 				h: 130
 			}
-			
+
 			if(!p2.session || p2.player === 1){
 				var name = account.loggedIn ? account.displayName : strings.defaultName;
 				var rank = account.loggedIn ? account.rank && account.rank.rank_name ? account.rank.rank_name : "ドンだーデビュー！" : (gameConfig.accounts && !p2.session ? strings.notLoggedIn : false);
@@ -377,16 +379,17 @@
 
 			this.nameplateCache.get({
 				ctx: ctx,
-				x: touchMultiplayer ? 47 : 320,
-				y: touchMultiplayer ? (this.player === 2 ? 361 : 119) : (this.player === 2 ? 460 : 20),
-				w: 273,
-				h: 66,
-				id: "1p" + name + "\n" + rank,
+				x: 167,
+				y: this.player === 2 ? 565 : 160,
+				w: 219,
+				h: 53,
+		     	id: "1p" + name + "\n" + rank,
 			}, ctx => {
 				this.draw.nameplate({
 					ctx: ctx,
 					x: 3,
 					y: 3,
+					scale: 0.8,
 					name: name,
 					rank: rank,
 					font: this.font,
@@ -449,7 +452,7 @@
 			ctx.globalAlpha = 1
 			
 			// Score background
-			ctx.fillStyle = "#000"
+			ctx.fillStyle = "rgba(0, 0, 0, 0.5)"
 			ctx.beginPath()
 			if(this.player === 2){
 				this.draw.roundedCorner(ctx, 184, 512, 20, 0)
@@ -479,8 +482,8 @@
 				this.ctx.drawImage(assets.image["badge_auto"],
 					183,
 					this.player === 2 ? 490 : 265,
-					23,
-					23
+					25,
+					25
 				)
 			}
 			
@@ -526,7 +529,7 @@
 			ctx.fillRect(0, 440, winW, 24)
 		
 		}else{
-			// Landscape
+			// PC用
 			
 			if(this.portraitClass){
 				this.portraitClass = false
@@ -558,22 +561,21 @@
 				var rank = account.loggedIn ? account.rank && account.rank.rank_name ? account.rank.rank_name : "ドンだーデビュー！" : (gameConfig.accounts && !p2.session ? strings.notLoggedIn : false);
 			}else{
 				var name = p2.name || strings.defaultName;
-				var rank = 'ドンだーデビュー！';
+				var rank = false;
 			}
 
 			this.nameplateCache.get({
 				ctx: ctx,
-				x: 167,
-				y: this.player === 2 ? 565 : 160,
-				w: 219,
-				h: 53,
-		     	id: "1p" + name + "\n" + rank,
+				x: touchMultiplayer ? 47 : 320,
+				y: touchMultiplayer ? (this.player === 2 ? 361 : 119) : (this.player === 2 ? 460 : 20),
+				w: 273,
+				h: 66,
+				id: "1p" + name + "\n" + rank,
 			}, ctx => {
 				this.draw.nameplate({
 					ctx: ctx,
 					x: 3,
 					y: 3,
-					scale: 0.8,
 					name: name,
 					rank: rank,
 					font: this.font,
@@ -668,12 +670,12 @@
 			// Badges
 			if(this.controller.autoPlayEnabled && !this.multiplayer){
 				this.ctx.drawImage(assets.image["badge_auto"],
-					125, 235, 34, 34
+					125, 235, 36, 36
 				)
 			}
 			
 			// Score background
-			ctx.fillStyle = "#000"
+			ctx.fillStyle = "rgba(0, 0, 0, 0.5)"
 			ctx.beginPath()
 			if(this.player === 2){
 				ctx.moveTo(0, 312)
@@ -749,12 +751,13 @@
 		ctx.save()
 		ctx.font = "30px TnT, Meiryo, sans-serif"
 		ctx.fillStyle = "#fff"
-		ctx.strokeStyle = "#fff"
-		ctx.lineWidth = 0.3
+		ctx.strokeStyle = "#000"
+		ctx.lineWidth = 8
 		ctx.textAlign = "center"
 		ctx.textBaseline = "top"
 		var glyph = 29
 		var pointsText = score.points.toString().split("")
+		  
 		ctx.translate(this.scorePos.x, this.scorePos.y)
 		ctx.scale(0.7, 1)
 		for(var i in pointsText){
@@ -763,8 +766,7 @@
 			ctx.fillText(pointsText[i], x, 0)
 		}
 		ctx.restore()
-		
-		// Branch background
+		// Branch
 		var keyTime = this.controller.getKeyTime()
 		var sound = keyTime["don"] > keyTime["ka"] ? "don" : "ka"
 		var padding = this.slotPos.paddingLeft
@@ -1027,6 +1029,7 @@
 				"230": "ok",
 				"450": "good"
 			}
+			var drawScore = this.currentScore.adlib ? "adlib" : scores[this.currentScore.type]
 			var yOffset = scoreMS < 70 ? scoreMS * (13 / 70) : 0
 			var fadeOut = scoreMS > 250 && !this.touchEnabled
 			if(fadeOut){
@@ -1053,72 +1056,72 @@
 		if(!this.touchEnabled && !this.portrait && !this.multiplayer){
 			this.assets.drawAssets("foreground")
 		}
-
-				// Show BPM
-				if (!this.multiplayer && (!this.touchEnabled || this.autoEnabled) && settings.getItem("showBpm")) {
-					this.draw.layeredText({
-						ctx: ctx,
-						text: "BPM: " + (Math.floor(1000 / this.beatInterval * 60 * 1000) / 1000).toString(),
-						fontSize: 30,
-						fontFamily: this.font,
-						x: 30,
-						y: frameTop + (this.portrait ? 500 : 400),
-						width: 600,
-						align: "left"
-					}, [
-						{ outline: "#000", letterBorder: 10 },
-						{ fill: "#fff" }
-					]);
-			}
-	
-			// show HS
-			if (!this.multiplayer && (!this.touchEnabled || this.autoEnabled) && settings.getItem("showHs")) {
-				const hsPosition = settings.getItem("showBpm")
-					? frameTop + (this.portrait ? 550 : 450) 
-					: frameTop + (this.portrait ? 500 : 400);  
-			
+		
+		// Show BPM
+		if (!this.multiplayer && (!this.touchEnabled || this.autoEnabled) && settings.getItem("showBpm")) {
 				this.draw.layeredText({
 					ctx: ctx,
-					text: "HS　: " + (function(beat, ms, measures, circles){
-						var BPM = 1000 / beat * 60;
-						var nowBar = -2;
-						for (let i = 0; i < measures.length; i++) {
-							nowBar++;
-							if (ms < measures[i].ms) {
-								break;
-							}
-						}
-						var nowCir = -2;
-						for (let i = 0; i < circles.length; i++) {
-							nowCir++;
-							if (ms < circles[i].originalMS) {
-								break;
-							}
-						}
-						if (nowBar < 0) {
-							nowBar = 0;
-						}
-						var Speed;
-						if (nowCir < 0) {
-							Speed = measures[nowBar].speed;
-						} else {
-							Speed = (measures[nowBar].ms > circles[nowCir].originalMS) ? measures[nowBar].speed : circles[nowCir].speed;
-						}
-						var HS = Speed / BPM * 60;
-						return Math.round(HS * 1000) / 1000;
-					}(this.beatInterval, this.ms, this.controller.parsedSongData.measures, this.controller.getCircles())).toString(),
+					text: "BPM: " + (Math.floor(1000 / this.beatInterval * 60 * 1000) / 1000).toString(),
 					fontSize: 30,
 					fontFamily: this.font,
 					x: 30,
-					y: hsPosition,  
+					y: frameTop + (this.portrait ? 500 : 400),
 					width: 600,
 					align: "left"
 				}, [
 					{ outline: "#000", letterBorder: 10 },
 					{ fill: "#fff" }
 				]);
-			}
+		}
+
+		// show HS
+		if (!this.multiplayer && (!this.touchEnabled || this.autoEnabled) && settings.getItem("showHs")) {
+			const hsPosition = settings.getItem("showBpm")
+				? frameTop + (this.portrait ? 550 : 450) 
+				: frameTop + (this.portrait ? 500 : 400);  
 		
+			this.draw.layeredText({
+				ctx: ctx,
+				text: "HS　: " + (function(beat, ms, measures, circles){
+					var BPM = 1000 / beat * 60;
+					var nowBar = -2;
+					for (let i = 0; i < measures.length; i++) {
+						nowBar++;
+						if (ms < measures[i].ms) {
+							break;
+						}
+					}
+					var nowCir = -2;
+					for (let i = 0; i < circles.length; i++) {
+						nowCir++;
+						if (ms < circles[i].originalMS) {
+							break;
+						}
+					}
+					if (nowBar < 0) {
+						nowBar = 0;
+					}
+					var Speed;
+					if (nowCir < 0) {
+						Speed = measures[nowBar].speed;
+					} else {
+						Speed = (measures[nowBar].ms > circles[nowCir].originalMS) ? measures[nowBar].speed : circles[nowCir].speed;
+					}
+					var HS = Speed / BPM * 60;
+					return Math.round(HS * 1000) / 1000;
+				}(this.beatInterval, this.ms, this.controller.parsedSongData.measures, this.controller.getCircles())).toString(),
+				fontSize: 30,
+				fontFamily: this.font,
+				x: 30,
+				y: hsPosition,  
+				width: 600,
+				align: "left"
+			}, [
+				{ outline: "#000", letterBorder: 10 },
+				{ fill: "#fff" }
+			]);
+		}
+
 		// Pause screen
 		if(!this.multiplayer && this.controller.game.paused){
 			ctx.fillStyle = "rgba(0, 0, 0, 0.5)"
@@ -1558,11 +1561,11 @@
 		var measureH = 130 * mul
 		
 		measures.forEach(measure => {
-			var timeForDistance = this.posToMs(distanceForCircle, measure.speed * parseFloat(localStorage.getItem("baisoku") ?? "1", 10))
+			var timeForDistance = this.posToMs(distanceForCircle, measure.speed * this.baisoku)
 			var startingTime = measure.ms - timeForDistance + this.controller.videoLatency
-			var finishTime = measure.ms + this.posToMs(this.slotPos.x - this.slotPos.paddingLeft + 3, measure.speed * parseFloat(localStorage.getItem("baisoku") ?? "1", 10)) + this.controller.videoLatency
+			var finishTime = measure.ms + this.posToMs(this.slotPos.x - this.slotPos.paddingLeft + 3, measure.speed * this.baisoku) + this.controller.videoLatency
 			if(measure.visible && (!measure.branch || measure.branch.active) && ms >= startingTime && ms <= finishTime){
-				var measureX = this.slotPos.x + this.msToPos(measure.ms - ms + this.controller.videoLatency, measure.speed * parseFloat(localStorage.getItem("baisoku") ?? "1", 10))
+				var measureX = this.slotPos.x + this.msToPos(measure.ms - ms + this.controller.videoLatency, measure.speed * this.baisoku)
 				this.ctx.strokeStyle = measure.branchFirst ? "#ff0" : "#bdbdbd"
 				this.ctx.lineWidth = 3
 				this.ctx.beginPath()
@@ -1608,7 +1611,7 @@
 		
 		for(var i = circles.length; i--;){
 			var circle = circles[i]
-			var speed = circle.speed * parseFloat(localStorage.getItem("baisoku") ?? "1", 10)
+			var speed = circle.speed * this.baisoku
 			
 			var timeForDistance = this.posToMs(distanceForCircle + this.slotPos.size / 2, speed)
 			var startingTime = circle.ms - timeForDistance + this.controller.videoLatency
@@ -1697,7 +1700,7 @@
 		var circleMs = circle.ms
 		var endTime = circle.endTime
 		var animated = circle.animating
-		var speed = circle.speed * parseFloat(localStorage.getItem("baisoku") ?? "1", 10)
+		var speed = circle.speed * this.baisoku
 		var played = circle.isPlayed
 		var drumroll = 0
 		var endX = 0
@@ -1732,6 +1735,10 @@
 			faceID = noteFace.big
 		}else if(type === "daiKa"){
 			fill = "#65bdbb"
+			size = bigCircleSize
+			faceID = noteFace.big
+		}else if(type === "green"){
+			fill = "#5eb956"
 			size = bigCircleSize
 			faceID = noteFace.big
 		}else if(type === "balloon"){
@@ -2030,11 +2037,12 @@
 			don.setAnimationEnd(length, don.normalAnimation)
 		}
 	}
-	displayScore(score, notPlayed, bigNote){
+	displayScore(score, notPlayed, bigNote, adlib){
 		if(!notPlayed){
 			this.currentScore.ms = this.getMS()
 			this.currentScore.type = score
 			this.currentScore.bigNote = bigNote
+			this.currentScore.adlib = adlib
 			
 			if(score > 0){
 				var explosion = this.assets.explosion
