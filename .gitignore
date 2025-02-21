@@ -53,5 +53,8 @@ public/assets/song_skins
 .venv
 .
 version.json
-
+package.json
+package-lock.json
+prettier.config.js
+node_modules
 /__pycache__
