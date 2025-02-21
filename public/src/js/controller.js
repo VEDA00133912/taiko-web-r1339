@@ -16,7 +16,7 @@ class Controller {
     this.saveScore = !autoPlayEnabled;
     this.multiplayer = multiplayer;
     this.touchEnabled = touchEnabled;
-    this.baisoku = baisoku;
+		this.mods = selectedSong.mods;
     if (multiplayer === 2) {
       this.snd = p2.player === 2 ? '_p1' : '_p2';
       this.don = p2.don || defaultDon;
@@ -50,14 +50,18 @@ class Controller {
         songData,
         selectedSong.difficulty,
         selectedSong.stars,
-        selectedSong.offset
+        selectedSong.offset,
+        false,
+        selectedSong.mods,
       );
     } else {
       this.parsedSongData = new ParseOsu(
         songData,
         selectedSong.difficulty,
         selectedSong.stars,
-        selectedSong.offset
+        selectedSong.offset,
+        false,
+        selectedSong.mods,
       );
     }
     this.offset = this.parsedSongData.soundOffset;
@@ -504,4 +508,25 @@ class Controller {
       this.lyrics.clean();
     }
   }
+
+  getModBadge() {
+		if (!this.mods) { 
+			return null;
+		}
+		if (this.mods.speed > 1) {
+			return "badge_x" + this.mods.speed.toString();
+		} else if (this.mods.shuffle > 0) { 
+			return "badge_s" + this.mods.shuffle.toString();
+		} else if (this.mods.doron) { 
+			return "badge_doron";
+		} else if (this.mods.allDon) { 
+			this.saveScore= false
+			return "badge_don";
+		} else if (this.mods.allKat) {			
+			this.saveScore = false
+			return "badge_kat";
+		}
+		
+		return null;
+	}
 }

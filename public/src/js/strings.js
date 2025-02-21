@@ -109,12 +109,47 @@ var translations = {
     tw: '遊戲設定',
     ko: '게임 설정',
   },
+  sourceCode: {
+    ja: 'ソースコード',
+    en: 'Source Code',
+    cn: '源代码',
+    tw: '原始碼',
+    ko: '소스 코드',
+  },
+  uploader: {
+    ja: '譜面をアップロード',
+    en: 'Upload Songs',
+    cn: '上传歌曲',
+    tw: '上傳歌曲',
+    ko: '노래 업로드',
+  },
+  titleSort: {
+    ja: 'タイトル順に並べ替え',
+    en: 'Sort by song title',
+    cn: '按歌名排序',
+    tw: '依歌曲名稱排序',
+    ko: '노래 제목별로 정렬',
+  },
   songOptions: {
     ja: '演奏オプション',
     en: 'Song Options',
     cn: '选项',
     tw: '選項',
     ko: '옵션',
+  },
+  download: {
+    ja: 'ダウンロード',
+    en: 'Download',
+    cn: '下载',
+    tw: '下載',
+    ko: '다운로드',
+  },
+  delete: {
+    ja: '削除',
+    en: 'Delete',
+    cn: '删除',
+    tw: '刪除',
+    ko: '삭제',
   },
   none: {
     ja: 'なし',
@@ -157,6 +192,48 @@ var translations = {
     cn: '4倍速',
     tw: '4倍速',
     ko: '4배속',
+  },
+  abekobe: {
+    ja: "あべこべ",
+    en: "Inverse",
+    cn: "颠倒",
+    tw: "顛倒",
+    kr: "역전"
+  },
+  kimagure: {
+    ja: "きまぐれ",
+    en: "Whimsical",
+    cn: "随兴",
+    tw: "小亂",
+    kr: "변덕"
+  },
+  detarame: {
+    ja: "でたらめ",
+    en: "Messy",
+    cn: "随意",
+    tw: "大亂",
+    kr: "대충"
+  },
+  doron: {
+    ja: "ドロン",
+    en: "Vanish",
+    cn: "隐身",
+    tw: "隱譜",
+    kr: "은신"
+  },
+  allDon: {
+    ja: "ドン(スコアは保存されません)",
+    en: "Don(Score not recorded)",
+    cn: "咚(不紀錄成績)",
+    tw: "咚(不紀錄成績)",
+    kr: "Don(Score not recorded)"
+  },
+  allKat: {
+    ja: "カッ(スコアは保存されません)",
+    en: "Kat(Score not recorded)",
+    cn: "咔(不紀錄成績)",
+    tw: "咔(不紀錄成績)",
+    kr: "Kat(Score not recorded)"
   },
   easy: {
     ja: 'かんたん',

@@ -76,7 +76,7 @@ class SongSelect {
         border: ['#ffd54f', '#ff9800'],
         outline: '#ffab40',
       },
-      keijiban: {
+      sourceCode: {
         sort: 0,
         background: '#1c1c1c',
         border: ['#000000', '#333333'],
@@ -230,50 +230,21 @@ class SongSelect {
     });
 
     // カスタムメニュー
-    // this.songs.push({
-    //     title: "ソースコード",
-    //     skin: this.songSkin.sourceCode,
-    //     action: "sourceCode",
-    // });
+    this.songs.push({
+      title: strings.sourceCode,
+      skin: this.songSkin.sourceCode,
+      action: "sourceCode",
+    });
     // for (let i = 0; i < 10; i++) {
     this.songs.push({
-      title: '曲を投稿！',
+      title: strings.uploader,
       skin: this.songSkin.upload,
       action: 'upload',
     });
     // }
-    this.songs.push({
-      title: '掲示板',
-      skin: this.songSkin.keijiban,
-      action: 'keijiban',
-    });
 
     this.songs.push({
-      title: '曲選択速度',
-      skin: this.songSkin.customSettings,
-      action: 'songSelectingSpeed',
-    });
-
-    this.songs.push({
-      title: 'ドロン',
-      skin: this.songSkin.customSettings,
-      action: 'doron',
-    });
-
-    this.songs.push({
-      title: 'あべこべ',
-      skin: this.songSkin.customSettings,
-      action: 'abekobe',
-    });
-
-    this.songs.push({
-      title: 'でたらめ',
-      skin: this.songSkin.customSettings,
-      action: 'detarame',
-    });
-
-    this.songs.push({
-      title: 'タイトル順で並べ替え',
+      title: strings.titleSort,
       skin: this.songSkin.customSettings,
       action: 'titlesort',
     });
@@ -313,14 +284,14 @@ class SongSelect {
         letterSpacing: 0,
       },
       {
-        text: 'ダウンロード',
+        text: strings.download,
         fill: '#e7a9da',
         iconName: 'download',
         iconFill: '#e7cbe1',
         letterSpacing: 4,
       },
       {
-        text: '削除',
+        text: strings.delete,
         fill: 'silver',
         iconName: 'trash',
         iconFill: '#111111',
@@ -334,6 +305,12 @@ class SongSelect {
       strings.baisoku,
       strings.sanbai,
       strings.yonbai,
+      strings.abekobe,
+      strings.doron,
+      strings.kimagure,
+      strings.detarame,
+      strings.allDon,
+      strings.allKat,
     ];
 
     this.draw = new CanvasDraw(noSmoothing);
@@ -1079,29 +1056,6 @@ class SongSelect {
         setTimeout(() => {
           window.location.href = '/upload/';
         }, 100);
-      } else if (currentSong.action === 'keijiban') {
-        this.playSound('se_don');
-        setTimeout(() => {
-          window.location.href = 'https://litey.trade/';
-        }, 100);
-      } else if (currentSong.action === 'songSelectingSpeed') {
-        this.playSound('se_don');
-        setTimeout(() => {
-          let songSelectingSpeed = localStorage.getItem('sss') ?? '400';
-          const pro = prompt('曲選択速度を入力してね！', songSelectingSpeed);
-          if (pro === null) {
-            // キャンセル
-          } else if (pro === '') {
-            songSelectingSpeed = '400';
-          } else {
-            songSelectingSpeed = pro;
-          }
-          const preValue = localStorage.getItem('sss') ?? '400';
-          localStorage.setItem('sss', songSelectingSpeed.toString());
-          if (preValue !== songSelectingSpeed) {
-            location.reload();
-          }
-        }, 100);
       } else if (currentSong.action === 'doron') {
         this.playSound('se_don');
         setTimeout(() => {
@@ -1118,40 +1072,6 @@ class SongSelect {
             doron = input;
           }
           localStorage.setItem('doron', doron);
-        }, 100);
-      } else if (currentSong.action === 'abekobe') {
-        this.playSound('se_don');
-        setTimeout(() => {
-          let abekobe = localStorage.getItem('abekobe') ?? 'false';
-          const input = prompt(
-            'あべこべを有効にするには"true"を入力してね！',
-            abekobe
-          );
-          if (input === null) {
-            // キャンセル
-          } else if (input === '') {
-            abekobe = 'false';
-          } else {
-            abekobe = input;
-          }
-          localStorage.setItem('abekobe', abekobe);
-        }, 100);
-      } else if (currentSong.action === 'detarame') {
-        this.playSound('se_don');
-        setTimeout(() => {
-          let detarame = localStorage.getItem('detarame') ?? '0';
-          const input = prompt(
-            'でたらめになる確率をパーセントで入力してね！',
-            detarame
-          );
-          if (input === null) {
-            // キャンセル
-          } else if (input === '') {
-            detarame = '0';
-          } else {
-            detarame = input;
-          }
-          localStorage.setItem('detarame', detarame);
         }, 100);
       } else if (currentSong.action === 'titlesort') {
         this.playSound('se_don');
@@ -1229,15 +1149,13 @@ class SongSelect {
     }
     var autoplay = false;
     var multiplayer = false;
-    var baisoku = 1;
-    if (this.state.options >= 3) {
-      const mapping = {
-        3: 2,
-        4: 3,
-        5: 4,
-      };
-      baisoku = mapping[this.state.options];
-    }
+		var mods = {
+			speed: 1,
+			shuffle: 0,
+			doron: false,
+			allDon: false,
+			allKat: false
+		};
     if (p2.session || this.state.options === 2) {
       multiplayer = true;
     } else if (this.state.options === 1) {
@@ -1247,6 +1165,23 @@ class SongSelect {
     } else if (p2.socket && p2.socket.readyState === 1 && !assets.customSongs) {
       multiplayer = ctrl;
     }
+
+    if (this.state.options > 2 && this.state.options < 6) {
+      mods.speed = this.state.options - 1;
+  } else if (this.state.options === 6) { 
+      mods.shuffle = 1;
+  } else if (this.state.options === 7) { 
+      mods.doron = true;
+  } else if (this.state.options === 8) { 
+      mods.shuffle = 0.25;
+  } else if (this.state.options === 9) { 
+      mods.shuffle = 0.5;
+  } else if (this.state.options === 10) { 
+      mods.allDon = true;
+  } else if (this.state.options === 11) { 
+      mods.allKat = true;
+  }  
+
     var diff = this.difficultyId[difficulty];
 
     new LoadSong(
@@ -1258,6 +1193,7 @@ class SongSelect {
         category: selectedSong.category,
         category_id: selectedSong.category_id,
         type: selectedSong.type,
+        mods: mods,
         offset: selectedSong.offset,
         songSkin: selectedSong.songSkin,
         stars: selectedSong.courses[diff].stars,
@@ -1268,7 +1204,6 @@ class SongSelect {
       autoplay,
       multiplayer,
       touch,
-      baisoku
     );
   }
   toOptions(moveBy) {

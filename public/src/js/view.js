@@ -506,16 +506,18 @@
       }
 
       // Badges
-      if (this.controller.autoPlayEnabled && !this.multiplayer) {
-        this.ctx.drawImage(
-          assets.image['badge_auto'],
-          183,
-          this.player === 2 ? 490 : 265,
-          25,
-          25
-        );
-      }
-
+			let badge_name = this.controller.getModBadge();
+			if(this.controller.autoPlayEnabled && !this.multiplayer){
+				badge_name = "badge_auto";
+			}
+			if (badge_name) { 
+				this.ctx.drawImage(assets.image[badge_name],
+					183,
+					this.player === 2 ? 490 : 265,
+					23,
+					23
+				)
+			}
       // Gauge
       ctx.fillStyle = '#000';
       ctx.beginPath();
@@ -716,9 +718,15 @@
       }
 
       // Badges
-      if (this.controller.autoPlayEnabled && !this.multiplayer) {
-        this.ctx.drawImage(assets.image['badge_auto'], 125, 235, 36, 36);
-      }
+			let badge_name = this.controller.getModBadge();
+			if(this.controller.autoPlayEnabled && !this.multiplayer){
+				badge_name = "badge_auto";
+			}
+			if(badge_name) {
+				this.ctx.drawImage(assets.image[badge_name],
+					125, 235, 34, 34
+				)
+			}
 
       // Score background
       ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
@@ -1818,15 +1826,10 @@
         ) +
         this.controller.videoLatency;
 
-      if (circle.isPlayed <= 0 || circle.score === 0) {
-        if (
-          (!circle.branch || circle.branch.active) &&
-          ms >= startingTime &&
-          ms <= finishTime &&
-          circle.isPlayed !== -1
-        ) {
-          this.drawCircle(circle);
-        }
+        if(circle.isPlayed <= 0 || circle.score === 0){
+          if((!circle.branch || circle.branch.active) && ms >= startingTime && ms <= finishTime && circle.isPlayed !== -1){
+            this.drawCircle(circle, null, null, this.controller.mods && this.controller.mods.doron)
+          }
       } else if (!circle.animating) {
         // Start animation to gauge
         circle.animate(ms);
@@ -1900,204 +1903,183 @@
     }
     return data[0];
   }
-  drawCircle(circle, circlePos, fade) {
-    var ctx = this.ctx;
-    var mul = this.slotPos.size / 106;
+	drawCircle(circle, circlePos, fade, doron){
+		var ctx = this.ctx
+		var mul = this.slotPos.size / 106
+		
+		var bigCircleSize = 106 * mul / 2
+		var circleSize = 70 * mul / 2
+		var lyricsSize = 20 * mul
+		
+		var fill, size, faceID
+		var type = circle.type
+		var ms = this.getMS()
+		var circleMs = circle.ms
+		var endTime = circle.endTime
+		var animated = circle.animating
+		var speed = circle.speed
+		var played = circle.isPlayed
+		var drumroll = 0
+		var endX = 0
+		
+		if(!circlePos){
+			circlePos = {
+				x: this.slotPos.x + this.msToPos(circleMs - ms + this.controller.videoLatency, speed),
+				y: this.slotPos.y
+			}
+		}
+		if(animated){
+			var noteFace = {
+				small: 0,
+				big: 3
+			}
+		}else{
+			var noteFace = this.noteFace
+		}
 
-    var bigCircleSize = (106 * mul) / 2;
-    var circleSize = (70 * mul) / 2;
-    var lyricsSize = 20 * mul;
-
-    var fill, size, faceID;
-    var type = circle.type;
-    var ms = this.getMS();
-    var circleMs = circle.ms;
-    var endTime = circle.endTime;
-    var animated = circle.animating;
-    var speed = circle.speed * this.baisoku;
-    var played = circle.isPlayed;
-    var drumroll = 0;
-    var endX = 0;
-
-    const doron = localStorage.getItem('doron') ?? 'false';
-
-    if (!circlePos) {
-      circlePos = {
-        x:
-          this.slotPos.x +
-          this.msToPos(circleMs - ms + this.controller.videoLatency, speed),
-        y: this.slotPos.y,
-      };
-    }
-    if (animated) {
-      var noteFace = {
-        small: 0,
-        big: 3,
-      };
-    } else {
-      var noteFace = this.noteFace;
-    }
-    if (type === 'don' || (type === 'daiDon' && played === 1)) {
-      fill = '#f34728';
-      size = circleSize;
-      faceID = noteFace.small;
-    } else if (type === 'ka' || (type === 'daiKa' && played === 1)) {
-      fill = '#65bdbb';
-      size = circleSize;
-      faceID = noteFace.small;
-    } else if (type === 'daiDon') {
-      fill = '#f34728';
-      size = bigCircleSize;
-      faceID = noteFace.big;
-    } else if (type === 'daiKa') {
-      fill = '#65bdbb';
-      size = bigCircleSize;
-      faceID = noteFace.big;
-    } else if (type === 'green') {
-      fill = '#5eb956';
-      size = bigCircleSize;
-      faceID = noteFace.big;
-    } else if (type === 'balloon') {
-      if (animated) {
-        fill = '#f34728';
-        size = bigCircleSize * 0.8;
-        faceID = noteFace.big;
-      } else {
-        fill = '#f87700';
-        size = circleSize;
-        faceID = noteFace.small;
-        var h = size * 1.8;
-        if (
-          circleMs + this.controller.audioLatency < ms &&
-          ms <= endTime + this.controller.audioLatency
-        ) {
-          circlePos.x = this.slotPos.x;
-        } else if (ms > endTime + this.controller.audioLatency) {
-          circlePos.x =
-            this.slotPos.x +
-            this.msToPos(endTime - ms + this.controller.audioLatency, speed);
-        }
-        if (doron !== 'true') {
-          ctx.drawImage(
-            assets.image['balloon'],
-            circlePos.x + size - 4,
-            circlePos.y - h / 2 + 2,
-            (h / 61) * 115,
-            h
-          );
-        }
-      }
-    } else if (type === 'drumroll' || type === 'daiDrumroll') {
-      fill = '#f3b500';
-      if (type == 'drumroll') {
-        size = circleSize;
-        faceID = noteFace.small;
-      } else {
-        size = bigCircleSize;
-        faceID = noteFace.big;
-      }
-      endX = this.msToPos(endTime - circleMs, speed);
-      drumroll = endX > 50 ? 2 : 1;
-
-      if (doron !== 'true') {
-        ctx.fillStyle = fill;
-        ctx.strokeStyle = '#000';
-        ctx.lineWidth = 3;
-        ctx.beginPath();
-        ctx.moveTo(circlePos.x, circlePos.y - size + 1.5);
-        ctx.arc(
-          circlePos.x + endX,
-          circlePos.y,
-          size - 1.5,
-          Math.PI / -2,
-          Math.PI / 2
-        );
-        ctx.lineTo(circlePos.x, circlePos.y + size - 1.5);
-        ctx.fill();
-        ctx.stroke();
-      }
-    }
-
-    if ((!fade || fade < 1) && doron !== 'true') {
-      // Main circle
-      ctx.fillStyle = fill;
-      ctx.beginPath();
-      ctx.arc(circlePos.x, circlePos.y, size - 1, 0, Math.PI * 2);
-      ctx.fill();
-      // Face on circle
-      var drawSize = size;
-      if (faceID < 2) {
-        drawSize *= bigCircleSize / circleSize;
-      }
-      ctx.drawImage(
-        assets.image[drumroll ? 'notes_drumroll' : 'notes'],
-        0,
-        172 * faceID,
-        172,
-        172,
-        circlePos.x - drawSize - 4,
-        circlePos.y - drawSize - 4,
-        drawSize * 2 + 8,
-        drawSize * 2 + 8
-      );
-    }
-    if (fade && !this.touchEnabled) {
-      ctx.globalAlpha = this.draw.easeOut(fade < 1 ? fade : 2 - fade);
-      ctx.fillStyle = '#fff';
-      ctx.beginPath();
-      ctx.arc(circlePos.x, circlePos.y, size - 1, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.globalAlpha = 1;
-    }
-    if (!circle.animating && circle.text) {
-      // Text
-      var text = circle.text;
-      var textX = circlePos.x;
-      var textY = circlePos.y + 83 * mul;
-      ctx.font = lyricsSize + 'px Kozuka, Microsoft YaHei, sans-serif';
-      ctx.textBaseline = 'middle';
-      ctx.textAlign = 'center';
-
-      if (drumroll === 2) {
-        var longText = text.split('ー');
-        text = longText[0];
-        var text0Width = ctx.measureText(longText[0]).width;
-        var text1Width = ctx.measureText(longText[1]).width;
-      }
-
-      ctx.fillStyle = '#fff';
-      ctx.strokeStyle = '#000';
-      ctx.lineWidth = 5;
-      ctx.strokeText(text, textX, textY);
-
-      if (drumroll === 2) {
-        ctx.strokeText(longText[1], textX + endX, textY);
-
-        ctx.lineWidth = 4;
-        var x1 = textX + text0Width / 2;
-        var x2 = textX + endX - text1Width / 2;
-        ctx.beginPath();
-        ctx.moveTo(x1, textY - 2);
-        ctx.lineTo(x2, textY - 2);
-        ctx.lineTo(x2, textY + 1);
-        ctx.lineTo(x1, textY + 1);
-        ctx.closePath();
-        ctx.stroke();
-        ctx.fill();
-      }
-
-      ctx.strokeStyle = '#fff';
-      ctx.lineWidth = 0.5;
-
-      ctx.strokeText(text, textX, textY);
-      ctx.fillText(text, textX, textY);
-
-      if (drumroll === 2) {
-        ctx.strokeText(longText[1], textX + endX, textY);
-        ctx.fillText(longText[1], textX + endX, textY);
-      }
-    }
-  }
+		if (!doron) {
+			if (type === "don" || type === "daiDon" && played === 1) {
+				fill = "#f34728"
+				size = circleSize
+				faceID = noteFace.small
+			} else if (type === "ka" || type === "daiKa" && played === 1) {
+				fill = "#65bdbb"
+				size = circleSize
+				faceID = noteFace.small
+			} else if (type === "daiDon") {
+				fill = "#f34728"
+				size = bigCircleSize
+				faceID = noteFace.big
+			} else if (type === "daiKa") {
+				fill = "#65bdbb"
+				size = bigCircleSize
+				faceID = noteFace.big
+				}else if(type === "green"){
+			fill = "#5eb956"
+			size = bigCircleSize
+			faceID = noteFace.big
+			} else if (type === "balloon") {
+				if (animated) {
+					fill = "#f34728"
+					size = bigCircleSize * 0.8
+					faceID = noteFace.big
+				} else {
+					fill = "#f87700"
+					size = circleSize
+					faceID = noteFace.small
+					var h = size * 1.8
+					if (circleMs + this.controller.audioLatency < ms && ms <= endTime + this.controller.audioLatency) {
+						circlePos.x = this.slotPos.x
+					} else if (ms > endTime + this.controller.audioLatency) {
+						circlePos.x = this.slotPos.x + this.msToPos(endTime - ms + this.controller.audioLatency, speed)
+					}
+					ctx.drawImage(assets.image["balloon"],
+						circlePos.x + size - 4,
+						circlePos.y - h / 2 + 2,
+						h / 61 * 115,
+						h
+					)
+				}
+			} else if (type === "drumroll" || type === "daiDrumroll") {
+				fill = "#f3b500"
+				if (type == "drumroll") {
+					size = circleSize
+					faceID = noteFace.small
+				} else {
+					size = bigCircleSize
+					faceID = noteFace.big
+				}
+				endX = this.msToPos(endTime - circleMs, speed)
+				drumroll = endX > 50 ? 2 : 1
+				
+				ctx.fillStyle = fill
+				ctx.strokeStyle = "#000"
+				ctx.lineWidth = 3
+				ctx.beginPath()
+				ctx.moveTo(circlePos.x, circlePos.y - size + 1.5)
+				ctx.arc(circlePos.x + endX, circlePos.y, size - 1.5, Math.PI / -2, Math.PI / 2)
+				ctx.lineTo(circlePos.x, circlePos.y + size - 1.5)
+				ctx.fill()
+				ctx.stroke()
+			}
+			if (!fade || fade < 1) {
+				// Main circle
+				ctx.fillStyle = fill
+				ctx.beginPath()
+				ctx.arc(circlePos.x, circlePos.y, size - 1, 0, Math.PI * 2)
+				ctx.fill()
+				// Face on circle
+				var drawSize = size
+				if (faceID < 2) {
+					drawSize *= bigCircleSize / circleSize
+				}
+				ctx.drawImage(assets.image[drumroll ? "notes_drumroll" : "notes"],
+					0, 172 * faceID,
+					172, 172,
+					circlePos.x - drawSize - 4,
+					circlePos.y - drawSize - 4,
+					drawSize * 2 + 8,
+					drawSize * 2 + 8
+				)
+			}
+			if (fade && !this.touchEnabled) {
+				ctx.globalAlpha = this.draw.easeOut(fade < 1 ? fade : 2 - fade)
+				ctx.fillStyle = "#fff"
+				ctx.beginPath()
+				ctx.arc(circlePos.x, circlePos.y, size - 1, 0, Math.PI * 2)
+				ctx.fill()
+				ctx.globalAlpha = 1
+			}
+		}
+		if(!circle.animating && circle.text){
+			// Text
+			var text = circle.text
+			var textX = circlePos.x
+			var textY = circlePos.y + 83 * mul
+			ctx.font = lyricsSize + "px Kozuka, Microsoft YaHei, sans-serif"
+			ctx.textBaseline = "middle"
+			ctx.textAlign = "center"
+			
+			if(drumroll === 2){
+				var longText = text.split("ー")
+				text = longText[0]
+				var text0Width = ctx.measureText(longText[0]).width
+				var text1Width = ctx.measureText(longText[1]).width
+			}
+			
+			ctx.fillStyle = "#fff"
+			ctx.strokeStyle = "#000"
+			ctx.lineWidth = 5
+			ctx.strokeText(text, textX, textY)
+			
+			if(drumroll === 2){
+				ctx.strokeText(longText[1], textX + endX, textY)
+				
+				ctx.lineWidth = 4
+				var x1 = textX + text0Width / 2
+				var x2 = textX + endX - text1Width / 2
+				ctx.beginPath()
+				ctx.moveTo(x1, textY - 2)
+				ctx.lineTo(x2, textY - 2)
+				ctx.lineTo(x2, textY + 1)
+				ctx.lineTo(x1, textY + 1)
+				ctx.closePath()
+				ctx.stroke()
+				ctx.fill()
+			}
+			
+			ctx.strokeStyle = "#fff"
+			ctx.lineWidth = 0.5
+			
+			ctx.strokeText(text, textX, textY)
+			ctx.fillText(text, textX, textY)
+			
+			if(drumroll === 2){
+				ctx.strokeText(longText[1], textX + endX, textY)
+				ctx.fillText(longText[1], textX + endX, textY)
+			}
+		}
+	}
   fillComboCache() {
     var fontSize = 58;
     var letterSpacing = fontSize * 0.67;

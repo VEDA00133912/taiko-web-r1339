@@ -564,10 +564,16 @@ class Scoresheet {
             }
           );
 
-          if (this.controller.autoPlayEnabled) {
-            ctx.drawImage(assets.image['badge_auto'], 431, 311, 34, 34);
-          }
-
+					let badge_name = this.controller.getModBadge();
+					if(this.controller.autoPlayEnabled) {
+						badge_name = "badge_auto";
+					}
+					if(badge_name){
+						ctx.drawImage(assets.image[badge_name],
+							431, 311, 34, 34
+						)
+					}
+				
           this.draw.roundedRect({
             ctx: ctx,
             x: 532,
