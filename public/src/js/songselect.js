@@ -16,91 +16,85 @@ class SongSelect{
 		if(resolution === "lowest"){
 			this.canvas.style.imageRendering = "pixelated"
 		}
-
-		let rand = () => {
-			let color = Math.floor(Math.random() * 16777215).toString(16).padStart(6, "0");
-			return `#${color}`;
-		}
 	
 		this.songSkin = {
-			"selected": {
-				background: "#ffdb2c",
-				border: ["#fff4b5", "#ffa600"],
-				outline: "#000"
-			},
-			"back": {
-				background: "#efb058",
-				border: ["#ffe7bd", "#c68229"],
-				outline: "#ad7723"
-			},
-			"random": {
-				sort: 0,
-				background: "#fa91ff",
-				border: ["#ffdfff", "#b068b2"],
-				outline: "#b221bb"
-			},
-			"search": {
-				sort: 0,
-				background: "#FF5266",
-				border: ["#FF9FB7", "#BE1432"],
-				outline: "#A50B15"
-			},
-			"tutorial": {
-				sort: 0,
-				background: "#29e8aa",
-				border: ["#86ffbd", "#009a8c"],
-				outline: "#08a28c"
-			},
-			"about": {
-				sort: 0,
-				background: "#a2d0e7",
-				border: ["#c6dfff", "#4485d9"],
-				outline: "#2390d9"
-			},
-			"settings": {
-				sort: 0,
-				background: "#ce93fa",
-				border: ["#dec4fd", "#a543ef"],
-				outline: "#a741ef"
-			},
-			"customSongs": {
-				sort: 0,
-				background: "#fab5d3",
-				border: ["#ffe7ef", "#d36aa2"],
-				outline: "#d36aa2"
-			},
-			"plugins": {
-				sort: 0,
-				background: "#f6bba1",
-				border: ["#fde9df", "#ce7553"],
-				outline: "#ce7553"
-			},
-                        // カスタム曲スキン
-                        "upload": {
-                            sort: 0,
-                            background: "#ffe57f",
-                            border: ["#ffd54f", "#ff9800"],
-                            outline: "#ffab40",
-                        },
-						"keijiban": {
-                            sort: 0,
-                            background: "#1c1c1c",
-                            border: ["#000000", "#333333"],
-                            outline: "#222222",
-                        },
-				"customSettings": {
-    				sort: 0,
-    				background: "#a5d6a7",  // 緑色の背景
-    				border: ["#81c784", "#66bb6a"],  // 緑色の境界線
-    				outline: "#388e3c"  // 緑色のアウトライン
+				"selected": {
+					"background": "#ffdb2c",
+					"border": ["#fff4b5", "#ffa600"],
+					"outline": "#000"
 				},
-			"default": {
-				sort: null,
-				background: `${rand()}`,
-				border: [`${rand()}`, `${rand()}`],
-				outline: `#333333`,
-				infoFill: `${rand()}`
-			}
+				"back": {
+					"background": "#efb058",
+					"border": ["#ffe7bd", "#c68229"],
+					"outline": "#ad7723"
+				},
+				"random": {
+					"sort": 0,
+					"background": "#fa91ff",
+					"border": ["#ffdfff", "#b068b2"],
+					"outline": "#b221bb"
+				},
+				"search": {
+					"sort": 0,
+					"background": "#FF5266",
+					"border": ["#FF9FB7", "#BE1432"],
+					"outline": "#A50B15"
+				},
+				"tutorial": {
+					"sort": 0,
+					"background": "#29e8aa",
+					"border": ["#86ffbd", "#009a8c"],
+					"outline": "#08a28c"
+				},
+				"about": {
+					"sort": 0,
+					"background": "#a2d0e7",
+					"border": ["#c6dfff", "#4485d9"],
+					"outline": "#2390d9"
+				},
+				"settings": {
+					"sort": 0,
+					"background": "#ce93fa",
+					"border": ["#dec4fd", "#a543ef"],
+					"outline": "#a741ef"
+				},
+				"customSongs": {
+					"sort": 0,
+					"background": "#fab5d3",
+					"border": ["#ffe7ef", "#d36aa2"],
+					"outline": "#d36aa2"
+				},
+				"plugins": {
+					"sort": 0,
+					"background": "#f6bba1",
+					"border": ["#fde9df", "#ce7553"],
+					"outline": "#ce7553"
+				},
+				"upload": {
+					"sort": 0,
+					"background": "#ffe57f",
+					"border": ["#ffd54f", "#ff9800"],
+					"outline": "#ffab40"
+				},
+				"keijiban": {
+					"sort": 0,
+					"background": "#1c1c1c",
+					"border": ["#000000", "#333333"],
+					"outline": "#222222"
+				},
+				"customSettings": {
+					"sort": 0,
+					"background": "#a5d6a7",
+					"border": ["#81c784", "#66bb6a"],
+					"outline": "#388e3c"
+				},
+				"default": {
+					"sort": null,
+					"background": "#ececec",
+					"border": ["#fbfbfb", "#8b8b8b"],
+					"outline": "#656565",
+					"infoFill": "#656565"
+				}			
 		}
 		
 		var songSkinLength = Object.keys(this.songSkin).length
@@ -242,11 +236,6 @@ class SongSelect{
 					action: "songSelectingSpeed",
 				});
 		
-				this.songs.push({
-					title: "ばいそく",
-					skin: this.songSkin.customSettings,
-					action: "baisoku",
-				});
 
 				this.songs.push({
 					title: "ドロン",
@@ -317,7 +306,7 @@ class SongSelect{
 			iconFill: "#111111",
 			letterSpacing: 4
 		}]
-		this.optionsList = [strings.none, strings.auto, strings.netplay]
+		this.optionsList = [strings.none, strings.auto, strings.netplay, strings.baisoku, strings.sanbai, strings.yonbai]
 		
 		this.draw = new CanvasDraw(noSmoothing)
 		this.songTitleCache = new CanvasCache(noSmoothing)
@@ -410,7 +399,7 @@ class SongSelect{
 			waitPreview: 0
 		}
 		this.songSelecting = {
-			speed: parseFloat(localStorage.getItem("sss") ?? "400", 10),
+			speed: parseInt(localStorage.getItem("sss") ?? "400", 10),
 			resize: 0.3,
 			scrollDelay: 0.1
 		}
@@ -940,20 +929,6 @@ class SongSelect{
 									location.reload();
 								}
 							}, 100);
-						} else if (currentSong.action === "baisoku") {
-							this.playSound("se_don");
-							setTimeout(() => {
-								let baisoku = localStorage.getItem("baisoku") ?? "1";
-								const input = prompt("ばいそくの倍率を入力してね！", baisoku);
-								if (input === null) {
-									// キャンセル
-								} else if (input === "") {
-									baisoku = "1";
-								} else {
-									baisoku = input;
-								}
-								localStorage.setItem("baisoku", baisoku.toString());
-							}, 100);
 						} else if (currentSong.action === "doron") {
 							this.playSound("se_don");
 							setTimeout(() => {
@@ -1066,7 +1041,15 @@ class SongSelect{
 		}
 		var autoplay = false
 		var multiplayer = false
-		if(p2.session || this.state.options === 2){
+		var baisoku = 1;
+		if (this.state.options >= 3){
+			const mapping = {
+				3: 2,
+				4: 3,
+				5: 4,
+			};
+			baisoku = mapping[this.state.options];
+		}if(p2.session || this.state.options === 2){
 			multiplayer = true
 		}else if(this.state.options === 1){
 			autoplay = true
@@ -1091,7 +1074,7 @@ class SongSelect{
 			"hash": selectedSong.hash,
 			"lyrics": selectedSong.lyrics,
 			"video": selectedSong.video,
-		}, autoplay, multiplayer, touch)
+		}, autoplay, multiplayer, touch, baisoku)
 	}
 	toOptions(moveBy){
 		if(!p2.session){
@@ -2375,9 +2358,8 @@ class SongSelect{
 			var rank = account.loggedIn ? (account.rank?.rank_name || "ドンだーデビュー！") : (gameConfig.accounts && !p2.session ? strings.notLoggedIn : false);
 		}else{
 			var name = p2.name || strings.defaultName;
-			var rank = 'ドンだーデビュー！';
+			var rank = strings.rank.rank_name;
 		}
-
 		this.nameplateCache.get({
 			ctx: ctx,
 			x: frameLeft + 60,

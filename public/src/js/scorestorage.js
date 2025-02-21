@@ -61,6 +61,7 @@ class ScoreStorage{
 						if(score.crown === "gold" && score.good >= 1 && score.ok === 0 && score.bad === 0){
 							score.crown = "rainbow"
 						}
+
 						if(!songAdded){
 							scores[hash] = {title: null}
 							songAdded = true
@@ -130,12 +131,14 @@ class ScoreStorage{
 				var scoreArray = []
 				score[diff].rainbow = score[diff].crown === "rainbow"				
 				var crown = score[diff].crown === "rainbow" ? "2" : this.crownValue.indexOf(score[diff].crown).toString()
+				
 				for(var j in this.scoreKeys){
 					var name = this.scoreKeys[j]
 					var value = score[diff][name]
 					value = Math.floor(value).toString(36)
 					scoreArray.push(value)
 				}
+		
 				diffArray.unshift(crown + scoreArray.join(","))
 				notEmpty = true
 			}else if(notEmpty){

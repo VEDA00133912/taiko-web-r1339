@@ -111,6 +111,7 @@ var assets = {
 		"se_cancel.ogg",
 		"se_don.ogg",
 		"se_ka.ogg",
+		"se_hidden.ogg",
 		"se_jump.ogg",
 		
 		"se_balloon.ogg",
