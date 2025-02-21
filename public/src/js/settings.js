@@ -57,6 +57,14 @@ class Settings{
 			showLyrics: {
 				type: "toggle",
 				default: true
+			},
+			showBpm: {
+                type: "toggle",
+                default: false
+            },
+			showHs: {
+				type: "toggle",
+				default: false
 			}
 		}
 		

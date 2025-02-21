@@ -809,6 +809,24 @@ var translations = {
 				ko: "가사 표시하기"
 			}
 		},
+		showBpm: {
+            name: {
+                ja: "BPMの表示",
+                en: "Show BPM",
+                cn: "BPM 显示",
+                tw: "BPM 顯示",
+                ko: "BPM 표시"
+            }
+        },
+		showHs: {
+			name: {
+				ja: "HSの表示",
+                en: "Show HS",
+                cn: "HS 显示",
+                tw: "HS 顯示",
+                ko: "HS 표시"
+			}
+		},
 		on: {
 			ja: "オン",
 			en: "On",

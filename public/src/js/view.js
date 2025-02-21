@@ -1053,6 +1053,71 @@
 		if(!this.touchEnabled && !this.portrait && !this.multiplayer){
 			this.assets.drawAssets("foreground")
 		}
+
+				// Show BPM
+				if (!this.multiplayer && (!this.touchEnabled || this.autoEnabled) && settings.getItem("showBpm")) {
+					this.draw.layeredText({
+						ctx: ctx,
+						text: "BPM: " + (Math.floor(1000 / this.beatInterval * 60 * 1000) / 1000).toString(),
+						fontSize: 30,
+						fontFamily: this.font,
+						x: 10,
+						y: frameTop + (this.portrait ? 500 : 400),
+						width: 600,
+						align: "left"
+					}, [
+						{ outline: "#000", letterBorder: 10 },
+						{ fill: "#fff" }
+					]);
+			}
+	
+			// show HS
+			if (!this.multiplayer && (!this.touchEnabled || this.autoEnabled) && settings.getItem("showHs")) {
+				const hsPosition = settings.getItem("showBpm")
+					? frameTop + (this.portrait ? 550 : 450) 
+					: frameTop + (this.portrait ? 500 : 400);  
+			
+				this.draw.layeredText({
+					ctx: ctx,
+					text: "HS　: " + (function(beat, ms, measures, circles){
+						var BPM = 1000 / beat * 60;
+						var nowBar = -2;
+						for (let i = 0; i < measures.length; i++) {
+							nowBar++;
+							if (ms < measures[i].ms) {
+								break;
+							}
+						}
+						var nowCir = -2;
+						for (let i = 0; i < circles.length; i++) {
+							nowCir++;
+							if (ms < circles[i].originalMS) {
+								break;
+							}
+						}
+						if (nowBar < 0) {
+							nowBar = 0;
+						}
+						var Speed;
+						if (nowCir < 0) {
+							Speed = measures[nowBar].speed;
+						} else {
+							Speed = (measures[nowBar].ms > circles[nowCir].originalMS) ? measures[nowBar].speed : circles[nowCir].speed;
+						}
+						var HS = Speed / BPM * 60;
+						return Math.round(HS * 1000) / 1000;
+					}(this.beatInterval, this.ms, this.controller.parsedSongData.measures, this.controller.getCircles())).toString(),
+					fontSize: 30,
+					fontFamily: this.font,
+					x: 10,
+					y: hsPosition,  
+					width: 600,
+					align: "left"
+				}, [
+					{ outline: "#000", letterBorder: 10 },
+					{ fill: "#fff" }
+				]);
+			}
 		
 		// Pause screen
 		if(!this.multiplayer && this.controller.game.paused){
