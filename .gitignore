@@ -58,3 +58,4 @@ package-lock.json
 prettier.config.js
 node_modules
 /__pycache__
+memo.txt

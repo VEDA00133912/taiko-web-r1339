@@ -1,25 +1,46 @@
 <!DOCTYPE html>
 <html lang="ja">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>太鼓ウェブあっぷろーだー</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="upload.js"></script>
-  </head>
-  <body>
-    <h1>太鼓ウェブあっぷろーだー</h1>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>太鼓ウェブ - 譜面あっぷろーだー</title>
+  <link rel="stylesheet" href="./style.css">
+  <link rel="icon" type="image/x-icon" href="../assets/img/favicon.png">
+  <script src="./upload.js"></script>
+</head>
+<body>
+  <h1>太鼓ウェブ 譜面あっぷろーだー</h1>
+  <p>
+    このページのデザインは現在PC, タブレットにのみ対応しています<br><br>
+    (まだなんもしてないんでスマホだと見づらくなってると思います..)
+  </p>
 
-    <form id="upload-form" enctype="multipart/form-data">
-      <label for="file_tja">TJA ファイル:</label>
-      <input type="file" name="file_tja" accept=".tja" required>
+  <form id="upload-form" action="#" method="POST" enctype="multipart/form-data">
+    <div class="upload-cards">
+      <div class="upload-card">
+        <label for="file_tja">TJAファイル</label>
+        <p2>tjaをアップロード</p2>
+        <input type="file" id="file_tja" name="file_tja" accept=".tja" required>
+        <span class="file-status">ファイルが選択されていません</span>
+      </div>
 
-      <label for="file_music">音楽ファイル:</label>
-      <input type="file" name="file_music" accept=".ogg,.mp3,.wav" required>
-    </form>
+      <div class="upload-card">
+        <label for="file_music">音源ファイル</label>
+        <p2>音源をアップロード</p2>
+        <input type="file" id="file_music" name="file_music" accept=".ogg,.mp3,.wav" required>
+        <span class="file-status">ファイルが選択されていません</span>
+      </div>
+    </div>
+  </form>
 
-    <button type="button" onclick="uploadFiles()">今すぐ投稿！ (1分ほどかかる場合があります)</button>
+  <button type="button" onclick="uploadFiles()">
+    今すぐアップロード！<br>(30秒ほどで完了します)
+  </button>
 
-    <div id="error-view"></div>
-  </body>
+  <h1>この譜面あっぷろーだーの使い方</h1>
+  <p>1: TJAファイル、音源ファイルをそれぞれ選択</p>
+  <p>2: ボタンを押して太鼓ウェブにアップロード！</p>
+
+  <div id="error-view"></div>
+</body>
 </html>
