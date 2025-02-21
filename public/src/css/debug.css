@@ -27,14 +27,24 @@
 	-webkit-text-stroke: 0.25em #555;
 }
 
-#debug .minimise{
-	position: absolute;
-	top: 3px;
-	right: 3px;
-	width: 19px;
-	height: 19px;
-	background: #d77;
-	z-index: 1;
+#debug .minimise {
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    width: 19px; 
+    height: 19px; 
+    background: #d77; 
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    font-size: 14px; 
+    color: #555; 
+    z-index: 1;
+}
+
+#debug .minimise:hover {
+    background: #db4d4d; 
+    cursor: pointer; 
 }
 
 #debug .content{
