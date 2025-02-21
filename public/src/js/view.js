@@ -1061,7 +1061,7 @@
 						text: "BPM: " + (Math.floor(1000 / this.beatInterval * 60 * 1000) / 1000).toString(),
 						fontSize: 30,
 						fontFamily: this.font,
-						x: 10,
+						x: 30,
 						y: frameTop + (this.portrait ? 500 : 400),
 						width: 600,
 						align: "left"
@@ -1109,7 +1109,7 @@
 					}(this.beatInterval, this.ms, this.controller.parsedSongData.measures, this.controller.getCircles())).toString(),
 					fontSize: 30,
 					fontFamily: this.font,
-					x: 10,
+					x: 30,
 					y: hsPosition,  
 					width: 600,
 					align: "left"
