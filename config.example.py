@@ -26,8 +26,13 @@ CUSTOM_JS = ''
 
 # Default plugins to load with the simulator.
 PLUGINS = [{
-    'url': '',
-    'start': False,
+    'url': '/src/js/plugin/change-music-speed.taikoweb.js',
+    'start': True,
+    'hide': False
+},
+{
+    'url': '/src/js/plugin/change-timing-window.taikoweb.js',
+    'start': True,
     'hide': False
 }]
 
