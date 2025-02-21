@@ -22,7 +22,6 @@
 			speed: 1,
 			shuffle: 0,
 			doron: false,
-			hardcore: false,
 			allDon: false,
 			allKat: false
 		};

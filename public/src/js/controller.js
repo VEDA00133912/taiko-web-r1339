@@ -8,7 +8,6 @@ class Controller {
     autoPlayEnabled,
     multiplayer,
     touchEnabled,
-    baisoku = 1
   ) {
     this.selectedSong = selectedSong;
     this.songData = songData;
@@ -133,10 +132,6 @@ class Controller {
 
     this.game = new Game(this, this.selectedSong, this.parsedSongData);
     this.view = new View(this);
-    this.view = new View(this, baisoku);
-    if (this.view.baisoku > 1) {
-      this.saveScore = true;
-    }
     this.mekadon = new Mekadon(this, this.game);
     this.keyboard = new GameInput(this);
     if (!autoPlayEnabled && this.multiplayer !== 2) {
@@ -382,7 +377,6 @@ class Controller {
           this.autoPlayEnabled,
           false,
           this.touchEnabled,
-          this.baisoku
         );
         taikoGame.run();
       });

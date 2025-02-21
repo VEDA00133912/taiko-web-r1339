@@ -432,7 +432,7 @@ class SongSelect {
       waitPreview: 0,
     };
     this.songSelecting = {
-      speed: parseInt(localStorage.getItem('sss') ?? '400', 10),
+      speed: 600,
       resize: 0.3,
       scrollDelay: 0.1,
     };
