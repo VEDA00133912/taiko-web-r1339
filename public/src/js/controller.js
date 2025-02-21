@@ -225,8 +225,12 @@ class Controller{
 	gameEnded(){
 		var score = this.getGlobalScore()
 		var vp
+	
 		if(this.game.rules.clearReached(score.gauge)){
-			if(score.bad === 0){
+			if(score.ok === 0 && score.bad === 0){
+				vp = "donderfullcombo"
+				this.playSound("v_donderfullcombo", 0.050)
+			}else if(score.bad === 0){
 				vp = "fullcombo"
 				this.playSound("v_fullcombo", 1.350)
 			}else{
@@ -235,8 +239,11 @@ class Controller{
 		}else{
 			vp = "fail"
 		}
-		this.playSound("se_game" + vp)
-	}
+	
+		if(vp && vp !== "donderfullcombo"){
+			this.playSound("se_game" + vp);  
+		}
+	}	
 	displayResults(){
 		if(this.multiplayer !== 2){
 			if(this.view.cursorHidden){

@@ -1370,10 +1370,18 @@
 				grd.addColorStop(0.53, "#97c1c0")
 				grd.addColorStop(0.83, "#bddfde")
 				grd.addColorStop(1, "#97c1c0")
+			} else if(config.type === "rainbow"){
+				grd.addColorStop(0,"#0000ff")
+				grd.addColorStop(0.15,"#00ffff")
+				grd.addColorStop(0.35,"#00ff88")
+				grd.addColorStop(0.5,"#ffffff")
+				grd.addColorStop(0.65,"#ffff00")
+				grd.addColorStop(0.85,"#ff8800")
+				grd.addColorStop(1,"#ff00ff")
 			}
-			ctx.fillStyle = grd
-		}else{
-			ctx.fillStyle = "#ffdb2c"
+			ctx.fillStyle = grd;
+		} else {
+			ctx.fillStyle = "#ffdb2c";
 		}
 		ctx.fill(this.crownPath)
 		
