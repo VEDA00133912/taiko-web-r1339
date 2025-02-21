@@ -233,7 +233,7 @@ class SongSelect {
     this.songs.push({
       title: strings.sourceCode,
       skin: this.songSkin.sourceCode,
-      action: "sourceCode",
+      action: 'sourceCode',
     });
     // for (let i = 0; i < 10; i++) {
     this.songs.push({
@@ -1149,13 +1149,13 @@ class SongSelect {
     }
     var autoplay = false;
     var multiplayer = false;
-		var mods = {
-			speed: 1,
-			shuffle: 0,
-			doron: false,
-			allDon: false,
-			allKat: false
-		};
+    var mods = {
+      speed: 1,
+      shuffle: 0,
+      doron: false,
+      allDon: false,
+      allKat: false,
+    };
     if (p2.session || this.state.options === 2) {
       multiplayer = true;
     } else if (this.state.options === 1) {
@@ -1168,19 +1168,19 @@ class SongSelect {
 
     if (this.state.options > 2 && this.state.options < 6) {
       mods.speed = this.state.options - 1;
-  } else if (this.state.options === 6) { 
+    } else if (this.state.options === 6) {
       mods.shuffle = 1;
-  } else if (this.state.options === 7) { 
+    } else if (this.state.options === 7) {
       mods.doron = true;
-  } else if (this.state.options === 8) { 
+    } else if (this.state.options === 8) {
       mods.shuffle = 0.25;
-  } else if (this.state.options === 9) { 
+    } else if (this.state.options === 9) {
       mods.shuffle = 0.5;
-  } else if (this.state.options === 10) { 
+    } else if (this.state.options === 10) {
       mods.allDon = true;
-  } else if (this.state.options === 11) { 
+    } else if (this.state.options === 11) {
       mods.allKat = true;
-  }  
+    }
 
     var diff = this.difficultyId[difficulty];
 
@@ -1203,7 +1203,7 @@ class SongSelect {
       },
       autoplay,
       multiplayer,
-      touch,
+      touch
     );
   }
   toOptions(moveBy) {

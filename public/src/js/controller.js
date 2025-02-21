@@ -2,20 +2,14 @@ class Controller {
   constructor(...args) {
     this.init(...args);
   }
-  init(
-    selectedSong,
-    songData,
-    autoPlayEnabled,
-    multiplayer,
-    touchEnabled,
-  ) {
+  init(selectedSong, songData, autoPlayEnabled, multiplayer, touchEnabled) {
     this.selectedSong = selectedSong;
     this.songData = songData;
     this.autoPlayEnabled = autoPlayEnabled;
     this.saveScore = !autoPlayEnabled;
     this.multiplayer = multiplayer;
     this.touchEnabled = touchEnabled;
-		this.mods = selectedSong.mods;
+    this.mods = selectedSong.mods;
     if (multiplayer === 2) {
       this.snd = p2.player === 2 ? '_p1' : '_p2';
       this.don = p2.don || defaultDon;
@@ -51,7 +45,7 @@ class Controller {
         selectedSong.stars,
         selectedSong.offset,
         false,
-        selectedSong.mods,
+        selectedSong.mods
       );
     } else {
       this.parsedSongData = new ParseOsu(
@@ -60,7 +54,7 @@ class Controller {
         selectedSong.stars,
         selectedSong.offset,
         false,
-        selectedSong.mods,
+        selectedSong.mods
       );
     }
     this.offset = this.parsedSongData.soundOffset;
@@ -376,7 +370,7 @@ class Controller {
           this.songData,
           this.autoPlayEnabled,
           false,
-          this.touchEnabled,
+          this.touchEnabled
         );
         taikoGame.run();
       });
@@ -504,23 +498,23 @@ class Controller {
   }
 
   getModBadge() {
-		if (!this.mods) { 
-			return null;
-		}
-		if (this.mods.speed > 1) {
-			return "badge_x" + this.mods.speed.toString();
-		} else if (this.mods.shuffle > 0) { 
-			return "badge_s" + this.mods.shuffle.toString();
-		} else if (this.mods.doron) { 
-			return "badge_doron";
-		} else if (this.mods.allDon) { 
-			this.saveScore= false
-			return "badge_don";
-		} else if (this.mods.allKat) {			
-			this.saveScore = false
-			return "badge_kat";
-		}
-		
-		return null;
-	}
+    if (!this.mods) {
+      return null;
+    }
+    if (this.mods.speed > 1) {
+      return 'badge_x' + this.mods.speed.toString();
+    } else if (this.mods.shuffle > 0) {
+      return 'badge_s' + this.mods.shuffle.toString();
+    } else if (this.mods.doron) {
+      return 'badge_doron';
+    } else if (this.mods.allDon) {
+      this.saveScore = false;
+      return 'badge_don';
+    } else if (this.mods.allKat) {
+      this.saveScore = false;
+      return 'badge_kat';
+    }
+
+    return null;
+  }
 }

@@ -380,14 +380,14 @@ class LoadSong {
             this.songData,
             false,
             1,
-            this.touchEnabled,
+            this.touchEnabled
           );
           var taikoGame2 = new Controller(
             this.selectedSong2,
             this.song2Data,
             true,
             2,
-            this.touchEnabled,
+            this.touchEnabled
           );
           taikoGame1.run(taikoGame2);
           pageEvents.send('load-song-player2', this.selectedSong2);
@@ -409,7 +409,7 @@ class LoadSong {
         this.songData,
         this.autoPlayEnabled,
         false,
-        this.touchEnabled,
+        this.touchEnabled
       );
       taikoGame.run();
     }
