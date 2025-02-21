@@ -1064,6 +1064,22 @@ var translations = {
 			en: "Displayed Name",
 			ko: "닉네임"
 		},
+		rank: {
+			rankname: {
+			ja: "称号名",
+			en: "Title Name",
+			ch: "职称名称",
+			tw: "職銜名稱",
+			ko: "칭호 이름"
+			},
+			rankcolor: {
+				ja: "称号の色",
+				en: "Title Name",
+				ch: "标题颜色",
+				tw: "標題的顏色",
+				ko: "칭호 색상"
+			}
+		},
 		customdon: {
 			bodyFill: {
 				ja: "どう",

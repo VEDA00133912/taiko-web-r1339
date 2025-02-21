@@ -85,7 +85,7 @@ app.config['SESSION_REDIS'] = Redis(
 app.cache = Cache(app, config=redis_config)
 sess = Session()
 sess.init_app(app)
-#csrf = CSRFProtect(app)
+csrf = CSRFProtect(app)
 
 db = client[take_config('MONGO', required=True)['database']]
 db.users.create_index('username', unique=True)
@@ -235,6 +235,23 @@ def get_default_don(part=None):
         return '#5fb7c1'
     elif part == 'face_fill':
         return '#ff5724'
+
+def get_db_rank(user):
+    rank_name = user.get('rank_name', get_default_rank('rank_name'))
+    rank_color = user.get('rank_color', get_default_rank('rank_color'))
+    return {'rank_name': rank_name, 'rank_color': rank_color}
+
+
+def get_default_rank(part=None):
+    if part is None:
+        return {
+            'rank_name': get_default_rank('rank_name'),
+            'rank_color': get_default_rank('rank_color')
+        }
+    elif part == 'rank_name':
+        return 'ドンだーデビュー！'
+    elif part == 'rank_color':
+        return '#ecb158'
 
 def is_hex(input):
     try:
@@ -578,13 +595,12 @@ def route_api_login():
         return api_error('invalid_username_password')
     
     don = get_db_don(result)
-    
+    rank = get_db_rank(result)
     session['session_id'] = result['session_id']
     session['username'] = result['username']
     session.permanent = True if data.get('remember') else False
 
-    return jsonify({'status': 'ok', 'username': result['username'], 'display_name': result['display_name'], 'don': don})
-
+    return jsonify({'status': 'ok', 'username': result['username'], 'display_name': result['display_name'], 'don': don, 'rank': rank})
 
 @app.route(basedir + 'api/logout', methods=['POST'])
 @login_required
@@ -637,6 +653,30 @@ def route_api_account_don():
     
     return jsonify({'status': 'ok', 'don': {'body_fill': don_body_fill, 'face_fill': don_face_fill}})
 
+@app.route(basedir + 'api/account/rank', methods=['POST'])
+@login_required
+def route_api_account_rank():
+    data = request.get_json()
+    
+    if not schema.validate(data, schema.update_rank):
+        return abort(400)
+
+    rank_name = data.get('rank_name', '').strip()
+    if len(rank_name) > 30:
+        return api_error('invalid_rank_name')
+
+    rank_color = data.get('rank_color', '').strip()
+    if len(rank_color) != 7 or\
+       not rank_color.startswith("#") or\
+       not is_hex(rank_color[1:]):
+        return api_error('invalid_rank_color')
+
+    db.users.update_one({'username': session.get('username')}, {'$set': {
+        'rank_name': rank_name,
+        'rank_color': rank_color,
+    }})
+
+    return jsonify({'status': 'ok', 'rank': {'rank_name': rank_name, 'rank_color': rank_color}})
 
 @app.route(basedir + 'api/account/password', methods=['POST'])
 @login_required
@@ -723,7 +763,8 @@ def route_api_scores_get():
 
     user = db.users.find_one({'username': username})
     don = get_db_don(user)
-    return jsonify({'status': 'ok', 'scores': scores, 'username': user['username'], 'display_name': user['display_name'], 'don': don})
+    rank = get_db_rank(user)
+    return jsonify({'status': 'ok', 'scores': scores, 'username': user['username'], 'display_name': user['display_name'], 'don': don, 'rank': rank})
 
 
 @app.route(basedir + 'privacy')
@@ -876,4 +917,3 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     app.run(host=args.bind_address, port=args.port, debug=args.debug)
-

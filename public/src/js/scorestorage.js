@@ -289,6 +289,7 @@ class ScoreStorage{
 						delete account.username
 						delete account.displayName
 						delete account.don
+						delete account.rank
 						this.load()
 						pageEvents.send("logout")
 						return Promise.reject()

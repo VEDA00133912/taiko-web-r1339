@@ -86,6 +86,9 @@ var defaultDon = {
 	body_fill: "#5fb7c1",
 	face_fill: "#ff5724"
 }
+var defaultRank = {
+	rank_color: "#ecb158"
+}
 var strings
 var vectors
 var settings

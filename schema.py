@@ -43,6 +43,14 @@ update_don = {
     }
 }
 
+update_rank = {
+    '$schema': 'http://json-schema.org/schema#',
+    'type': 'object',
+    'properties': {
+        'rank_name': {'type': 'string'},
+        'rank_color': {'type': 'string'}
+    }
+}
 update_password = {
     '$schema': 'http://json-schema.org/schema#',
     'type': 'object',

@@ -283,6 +283,7 @@ class Loader{
 						account.username = response.username
 						account.displayName = response.display_name
 						account.don = response.don
+						account.rank = response.rank
 						scoreStorage.load(response.scores)
 						pageEvents.send("login", account.username)
 					}

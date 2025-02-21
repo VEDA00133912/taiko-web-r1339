@@ -367,31 +367,33 @@
 				h: 130
 			}
 			
+			if(!p2.session || p2.player === 1){
+				var name = account.loggedIn ? account.displayName : strings.defaultName;
+				var rank = account.loggedIn ? account.rank && account.rank.rank_name ? account.rank.rank_name : "ドンだーデビュー！" : (gameConfig.accounts && !p2.session ? strings.notLoggedIn : false);
+			}else{
+				var name = p2.name || strings.defaultName;
+				var rank = false;
+			}
+
 			this.nameplateCache.get({
 				ctx: ctx,
-				x: 167,
-				y: this.player === 2 ? 565 : 160,
-				w: 219,
-				h: 53,
-				id: "1p",
+				x: touchMultiplayer ? 47 : 320,
+				y: touchMultiplayer ? (this.player === 2 ? 361 : 119) : (this.player === 2 ? 460 : 20),
+				w: 273,
+				h: 66,
+				id: "1p" + name + "\n" + rank,
 			}, ctx => {
-				var defaultName = this.player === 1 ? strings.defaultName : strings.default2PName
-				if(this.multiplayer === 2){
-					var name = p2.name || defaultName
-				}else{
-					var name = account.loggedIn ? account.displayName : defaultName
-				}
 				this.draw.nameplate({
 					ctx: ctx,
 					x: 3,
 					y: 3,
-					scale: 0.8,
 					name: name,
+					rank: rank,
 					font: this.font,
 					blue: this.player === 2
 				})
 			})
-			
+
 			ctx.fillStyle = "#000"
 			ctx.fillRect(
 				0,
@@ -551,25 +553,29 @@
 			}
 			var taikoPos = {x: 179, y: frameTop + 190, w: 138, h: 162}
 			
+			if(!p2.session || p2.player === 1){
+				var name = account.loggedIn ? account.displayName : strings.defaultName;
+				var rank = account.loggedIn ? account.rank && account.rank.rank_name ? account.rank.rank_name : "ドンだーデビュー！" : (gameConfig.accounts && !p2.session ? strings.notLoggedIn : false);
+			}else{
+				var name = p2.name || strings.defaultName;
+				var rank = 'ドンだーデビュー！';
+			}
+
 			this.nameplateCache.get({
 				ctx: ctx,
-				x: touchMultiplayer ? 47 : 320,
-				y: touchMultiplayer ? (this.player === 2 ? 361 : 119) : (this.player === 2 ? 460 : 20),
-				w: 273,
-				h: 66,
-				id: "1p",
+				x: 167,
+				y: this.player === 2 ? 565 : 160,
+				w: 219,
+				h: 53,
+		     	id: "1p" + name + "\n" + rank,
 			}, ctx => {
-				var defaultName = this.player === 1 ? strings.defaultName : strings.default2PName
-				if(this.multiplayer === 2){
-					var name = p2.name || defaultName
-				}else{
-					var name = account.loggedIn ? account.displayName : defaultName
-				}
 				this.draw.nameplate({
 					ctx: ctx,
 					x: 3,
 					y: 3,
+					scale: 0.8,
 					name: name,
+					rank: rank,
 					font: this.font,
 					blue: this.player === 2
 				})

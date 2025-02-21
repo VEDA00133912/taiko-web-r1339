@@ -2371,12 +2371,13 @@ class SongSelect{
 		ctx.fill()
 		
 		if(!p2.session || p2.player === 1){
-			var name = account.loggedIn ? account.displayName : strings.defaultName
-			var rank = account.loggedIn || !gameConfig.accounts || p2.session ? false : strings.notLoggedIn
+			var name = account.loggedIn ? account.displayName : strings.defaultName;
+			var rank = account.loggedIn ? (account.rank?.rank_name || "ドンだーデビュー！") : (gameConfig.accounts && !p2.session ? strings.notLoggedIn : false);
 		}else{
-			var name = p2.name || strings.defaultName
-			var rank = false
+			var name = p2.name || strings.defaultName;
+			var rank = 'ドンだーデビュー！';
 		}
+
 		this.nameplateCache.get({
 			ctx: ctx,
 			x: frameLeft + 60,

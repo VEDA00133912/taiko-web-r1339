@@ -1613,7 +1613,9 @@
 		ctx.moveTo(r, 0)
 		this.roundedCorner(ctx, w, 0, r, 1)
 		ctx.lineTo(r, r)
-		ctx.fillStyle = config.blue ? "#67cecb" : "#ff421d"
+		ctx.fillStyle = account?.loggedIn && account?.rank?.rank_color
+		? account.rank.rank_color
+		: (account?.loggedIn ? "#ecb158" : (config?.blue ? "#67cecb" : "#ff421d"));
 		ctx.fill()
 		ctx.beginPath()
 		ctx.moveTo(r, r)

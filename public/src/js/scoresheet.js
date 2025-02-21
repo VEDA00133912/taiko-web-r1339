@@ -469,25 +469,31 @@ class Scoresheet{
 					ctx.fillText(text, 395, 308)
 					ctx.miterLimit = 10
 					
-					var defaultName = p === 0 ? strings.defaultName : strings.default2PName
-					if(p === this.player[0]){
-						var name = account.loggedIn ? account.displayName : defaultName
-					}else{
-						var name = results.name || defaultName
+					var defaultName = p === 0 ? strings.defaultName : strings.default2PName;
+					if (p === this.player[0]) {
+						var name = account.loggedIn ? account.displayName : defaultName;
+						var rank = account.loggedIn 
+						? (account.rank?.rank_name || "ドンだーデビュー！") 
+						: (gameConfig.accounts && !p2.session ? strings.notLoggedIn : false);
+					} else {
+						var name = p2.name || defaultName;
+						var rank = !p2.session ? (gameConfig.accounts ? strings.notLoggedIn : false) : false;
 					}
+
 					this.nameplateCache.get({
 						ctx: ctx,
 						x: 259,
 						y: 92,
 						w: 273,
 						h: 66,
-						id: p.toString() + "p" + name,
+						id: p.toString() + "p" + name + "\n" + rank,
 					}, ctx => {
 						this.draw.nameplate({
 							ctx: ctx,
 							x: 3,
 							y: 3,
 							name: name,
+							rank: rank,
 							font: this.font,
 							blue: p === 1
 						})

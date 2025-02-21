@@ -337,6 +337,7 @@ kbd{
 	display: none;
 }
 .account-view .displayname,
+.account-view .rankname,
 .accountpass-form input[type=password],
 .accountdel-form input[type=password],
 .login-form input[type=text],
@@ -357,6 +358,7 @@ kbd{
 	transform: scale(1.4);
 }
 .account-view .displayname-hint,
+.account-view .rankname-hint,
 .login-form .username-hint,
 .login-form .password-hint,
 .login-form .remember-label{
@@ -388,7 +390,8 @@ kbd{
 	color: #fff;
 	border-color: #fff;
 }
-.account-view .displayname-div{
+.account-view .displayname-div,
+.account-view .customtitle-div{
 	width: 80%;
 	margin: 0 auto;
 }

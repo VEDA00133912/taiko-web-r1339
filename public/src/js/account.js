@@ -45,6 +45,18 @@ class Account{
 		this.displayname.value = account.displayName
 		this.inputForms.push(this.displayname)
 		
+		this.getElement("rankname-hint").innerText = strings.account.rank.rankname
+		this.rankname = this.getElement("rankname")
+		this.rankname.placeholder = strings.account.rank.rankname
+		this.rankname.value = account.rank?.rank_name || 'ドンだーデビュー！';
+		this.inputForms.push(this.rankname)
+
+		this.customrankColor = this.getElement("customrank-rankcolor")
+		this.customrankColor.value = account.rank?.rank_color || '#ecb158';
+		var parent = this.customrankColor.parentNode
+		parent.insertBefore(document.createTextNode(strings.account.rank.rankcolor), parent.firstChild)
+		pageEvents.add(this.customrankColor, ["change", "input"])
+
 		this.redrawRunning = true
 		this.redrawPaused = matchMedia("(prefers-reduced-motion: reduce)").matches
 		this.redrawForce = true
@@ -164,6 +176,7 @@ class Account{
 		}
 		this.customdonBodyFill.value = defaultDon.body_fill
 		this.customdonFaceFill.value = defaultDon.face_fill
+		this.customrankColor.value = defaultRank.rank_color
 		this.customdonChange()
 	}
 	customdonRedraw(){
@@ -386,6 +399,7 @@ class Account{
 			account.username = response.username
 			account.displayName = response.display_name
 			account.don = response.don
+			account.rank = response.rank
 			var loadScores = scores => {
 				scoreStorage.load(scores)
 				this.onEnd(false, true, true)
@@ -443,6 +457,7 @@ class Account{
 		delete account.username
 		delete account.displayName
 		delete account.don
+		delete account.rank
 		var loadScores = () => {
 			scoreStorage.load()
 			this.onEnd(false, true)
@@ -488,6 +503,7 @@ class Account{
 				delete account.username
 				delete account.displayName
 				delete account.don
+				delete account.rank
 				scoreStorage.load()
 				pageEvents.send("logout")
 				return Promise.resolve
@@ -500,6 +516,22 @@ class Account{
 			}).then(response => {
 				account.displayName = response.display_name
 			}))
+		}
+		var newRank = this.rankname.value.trim();
+		var rankColor = this.customrankColor.value;
+
+		if (
+			!noNameChange &&
+			(newRank !== (account.rank?.rank_name || '') || rankColor !== (account.rank?.rank_color || '#ecb158'))
+		) {
+			promises.push(
+				this.request("account/rank", {
+					rank_name: newRank,
+					rank_color: rankColor
+				}).then(response => {
+					account.rank = response.rank;
+				})
+			);
 		}
 		var bodyFill = this.customdonBodyFill.value
 		var faceFill = this.customdonFaceFill.value
@@ -627,10 +659,11 @@ class Account{
 			this.redrawRunning = false
 			this.customdonCache.clean()
 			pageEvents.remove(this.customdonCanvas, "click")
+			pageEvents.remove(this.customrankColor, ["change", "input"])
 			pageEvents.remove(this.customdonBodyFill, ["change", "input"])
 			pageEvents.remove(this.customdonFaceFill, ["change", "input"])
 			pageEvents.remove(this.customdonResetBtn, ["click", "touchstart"])
-			pageEvents.remove(this.accounPassButton, ["click", "touchstart"])
+			pageEvents.remove(this.accountPassButton, ["click", "touchstart"])
 			pageEvents.remove(this.accountDelButton, ["click", "touchstart"])
 			pageEvents.remove(this.linkPrivacy, ["mousedown", "touchstart"])
 			pageEvents.remove(this.logoutButton, ["mousedown", "touchstart"])
@@ -640,6 +673,8 @@ class Account{
 			}
 			delete this.errorDiv
 			delete this.displayname
+			delete this.rankname
+			delete this.customrankColor
 			delete this.frames
 			delete this.customdonCanvas
 			delete this.customdonCtx
