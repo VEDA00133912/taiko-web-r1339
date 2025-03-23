@@ -507,22 +507,29 @@ class Controller {
 
   getModBadge() {
     if (!this.mods) {
-      return null;
+      return [];
     }
+  
+    let badges = [];
+  
     if (this.mods.speed > 1) {
-      return 'badge_x' + this.mods.speed.toString();
-    } else if (this.mods.shuffle > 0) {
-      return 'badge_s' + this.mods.shuffle.toString();
-    } else if (this.mods.doron) {
-      return 'badge_doron';
-    } else if (this.mods.allDon) {
-      this.saveScore = false;
-      return 'badge_don';
-    } else if (this.mods.allKat) {
-      this.saveScore = false;
-      return 'badge_kat';
+      badges.push('badge_x' + this.mods.speed.toString());
     }
-
-    return null;
-  }
+    if (this.mods.shuffle > 0) {
+      badges.push('badge_s' + this.mods.shuffle.toString());
+    }
+    if (this.mods.doron) {
+      badges.push('badge_doron');
+    }
+    if (this.mods.allDon) {
+      this.saveScore = false;
+      badges.push('badge_don');
+    }
+    if (this.mods.allKat) {
+      this.saveScore = false;
+      badges.push('badge_kat');
+    }
+  
+    return badges;
+  }  
 }

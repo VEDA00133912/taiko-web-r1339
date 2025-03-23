@@ -508,19 +508,30 @@
       }
 
       // Badges
-      let badge_name = this.controller.getModBadge();
+      let badge_names = [this.controller.getModBadge()];
       if (this.controller.autoPlayEnabled && !this.multiplayer) {
-        badge_name = 'badge_auto';
+        badge_names.push('badge_auto');
       }
-      if (badge_name) {
-        this.ctx.drawImage(
-          assets.image[badge_name],
-          183,
-          this.player === 2 ? 490 : 265,
-          23,
-          23
-        );
-      }
+      
+      const badgeSize = 23;
+      const badgeSpace = 1;
+      const startX = 183;
+      const startY = this.player === 2 ? 490 : 265;
+      
+      badge_names.forEach((badge, index) => {
+        if (assets.image[badge]) {
+          this.ctx.drawImage(
+            assets.image[badge],
+            startX - index * (badgeSize + badgeSpace),
+            startY,
+            badgeSize,
+            badgeSize
+          );
+        } else {
+          console.warn("Image not found for badge:", badge);
+        }
+      });
+
       // Gauge
       ctx.fillStyle = '#000';
       ctx.beginPath();
@@ -724,13 +735,29 @@
       }
 
       // Badges
-      let badge_name = this.controller.getModBadge();
+      let badge_names = this.controller.getModBadge(); 
       if (this.controller.autoPlayEnabled && !this.multiplayer) {
-        badge_name = 'badge_auto';
+        badge_names.push('badge_auto');
       }
-      if (badge_name) {
-        this.ctx.drawImage(assets.image[badge_name], 125, 235, 34, 34);
-      }
+      
+      const badgeSize = 34;
+      const badgeSpace = 1; 
+      const startX = 125;
+      const startY = 235;
+      
+      badge_names.forEach((badge, index) => {
+        if (assets.image[badge]) {
+          this.ctx.drawImage(
+            assets.image[badge], 
+            startX - index * (badgeSize + badgeSpace), 
+            startY, 
+            badgeSize, 
+            badgeSize
+          );
+        } else {
+          console.warn("Image not found for badge:", badge);
+        }
+      });      
 
       // Score background
       ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';

@@ -567,13 +567,30 @@ class Scoresheet {
             }
           );
 
-          let badge_name = this.controller.getModBadge();
+          let badge_names = [this.controller.getModBadge()];
+          console.log(badge_names);
           if (this.controller.autoPlayEnabled) {
-            badge_name = 'badge_auto';
+            badge_names.push('badge_auto');
           }
-          if (badge_name) {
-            ctx.drawImage(assets.image[badge_name], 431, 311, 34, 34);
-          }
+          
+          const badgeSize = 34;
+          const badgeSpace = 1; 
+          const startX = 431;
+          const startY = 311;
+          
+          badge_names.forEach((badge, index) => {
+            if (assets.image[badge]) {
+              ctx.drawImage(
+                assets.image[badge],
+                startX - index * (badgeSize + badgeSpace),
+                startY,
+                badgeSize,
+                badgeSize
+              );
+            } else {
+              console.warn("Image not found for badge:", badge);
+            }
+          });          
 
           this.draw.roundedRect({
             ctx: ctx,
