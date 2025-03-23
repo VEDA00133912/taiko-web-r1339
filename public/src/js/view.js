@@ -1169,93 +1169,73 @@
       this.assets.drawAssets('foreground');
     }
 
-    // Show BPM
-    if (
-      !this.multiplayer &&
-      (!this.touchEnabled || this.autoEnabled) &&
-      settings.getItem('showBpm')
-    ) {
-      this.draw.layeredText(
-        {
-          ctx: ctx,
-          text:
-            'BPM: ' +
-            (
-              Math.floor((1000 / this.beatInterval) * 60 * 1000) / 1000
-            ).toString(),
-          fontSize: 30,
-          fontFamily: this.font,
-          x: 30,
-          y: frameTop + (this.portrait ? 500 : 400),
-          width: 600,
-          align: 'left',
-        },
-        [{ outline: '#000', letterBorder: 10 }, { fill: '#fff' }]
-      );
-    }
+// Show BPM
+if (!this.multiplayer && settings.getItem("showBpm")) {
+  const bpm = (1000 / this.beatInterval * 60).toFixed(3);
 
-    // show HS
-    if (
-      !this.multiplayer &&
-      (!this.touchEnabled || this.autoEnabled) &&
-      settings.getItem('showHs')
-    ) {
-      const hsPosition = settings.getItem('showBpm')
-        ? frameTop + (this.portrait ? 550 : 450)
-        : frameTop + (this.portrait ? 500 : 400);
+  this.draw.layeredText(
+      {
+          ctx, 
+          text: `BPM: ${bpm}`,
+          fontSize: 30, 
+          fontFamily: this.font, 
+          x: 30, 
+          y: frameTop + (this.portrait ? 500 : 400), 
+          width: 600, 
+          align: "left"
+      },
+      [{ outline: "#000", letterBorder: 10 }, { fill: "#fff" }]
+  );
+}
+  
+// show HS
+if (!this.multiplayer && settings.getItem("showHs")) {
+  const hsPosition = settings.getItem("showBpm")
+      ? frameTop + (this.portrait ? 550 : 450)
+      : frameTop + (this.portrait ? 500 : 400);
 
-      this.draw.layeredText(
-        {
-          ctx: ctx,
-          text:
-            'HS　: ' +
-            (function (beat, ms, measures, circles) {
-              var BPM = (1000 / beat) * 60;
-              var nowBar = -2;
-              for (let i = 0; i < measures.length; i++) {
-                nowBar++;
-                if (ms < measures[i].ms) {
-                  break;
-                }
-              }
-              var nowCir = -2;
-              for (let i = 0; i < circles.length; i++) {
-                nowCir++;
-                if (ms < circles[i].originalMS) {
-                  break;
-                }
-              }
-              if (nowBar < 0) {
-                nowBar = 0;
-              }
-              var Speed;
-              if (nowCir < 0) {
-                Speed = measures[nowBar].speed;
-              } else {
-                Speed =
-                  measures[nowBar].ms > circles[nowCir].originalMS
-                    ? measures[nowBar].speed
-                    : circles[nowCir].speed;
-              }
-              var HS = (Speed / BPM) * 60;
-              return Math.round(HS * 1000) / 1000;
-            })(
-              this.beatInterval,
-              this.ms,
-              this.controller.parsedSongData.measures,
-              this.controller.getCircles()
-            ).toString(),
-          fontSize: 30,
-          fontFamily: this.font,
-          x: 30,
-          y: hsPosition,
-          width: 600,
-          align: 'left',
-        },
-        [{ outline: '#000', letterBorder: 10 }, { fill: '#fff' }]
-      );
-    }
+  const calculateHS = (beat, ms, measures, circles) => {
+      const BPM = (1000 / beat) * 60;
 
+      const findCurrentIndex = (data, key) => {
+          let index = -2;
+          for (let i = 0; i < data.length; i++) {
+              index++;
+              if (ms < data[i][key]) break;
+          }
+          return Math.max(index, 0);
+      };
+
+      const nowBar = findCurrentIndex(measures, "ms");
+      const nowCir = findCurrentIndex(circles, "originalMS");
+
+      const currentSpeed = nowCir < 0
+          ? measures[nowBar].speed
+          : measures[nowBar].ms > circles[nowCir].originalMS
+              ? measures[nowBar].speed
+              : circles[nowCir].speed;
+
+      return ((currentSpeed / BPM) * 60).toFixed(3);
+  };
+
+  const measures = this.controller.parsedSongData.measures;
+  const circles = this.controller.getCircles();
+  const hsValue = calculateHS(this.beatInterval, this.ms, measures, circles);
+
+  this.draw.layeredText({
+      ctx: ctx,
+      text: `HS : ${hsValue}`,
+      fontSize: 30,
+      fontFamily: this.font,
+      x: 30,
+      y: hsPosition,
+      width: 600,
+      align: "left"
+  }, [
+      { outline: "#000", letterBorder: 10 },
+      { fill: "#fff" }
+  ]);
+}
     // Pause screen
     if (!this.multiplayer && this.controller.game.paused) {
       ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';

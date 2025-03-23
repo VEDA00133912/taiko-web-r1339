@@ -56,6 +56,7 @@ var assets = {
     'notes_drumroll.png',
     'notes_hit.png',
     'notes_explosion.png',
+    'renda.png',
     'balloon.png',
     'taiko.png',
     'don_anim_normal_a.png',
