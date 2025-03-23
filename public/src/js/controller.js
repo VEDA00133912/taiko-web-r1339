@@ -263,28 +263,36 @@ class Controller {
       this.view.refresh();
     }
   }
+
   gameEnded() {
     var score = this.getGlobalScore();
     var vp;
 
     if (this.game.rules.clearReached(score.gauge)) {
-      if (score.ok === 0 && score.bad === 0) {
-        vp = 'donderfullcombo';
-        this.playSound('v_donderfullcombo', 0.05);
-      } else if (score.bad === 0) {
-        vp = 'fullcombo';
-        this.playSound('v_fullcombo', 1.35);
-      } else {
-        vp = 'clear';
-      }
+        if (score.ok === 0 && score.bad === 0) {
+            vp = "donderfullcombo";
+
+            if (this.autoPlayEnabled) {
+                this.playSound("v_meka_donderfulcombo", 0.050);
+            } else {
+                this.playSound("v_donderfullcombo", 0.050);
+            }
+
+        } else if (score.bad === 0) {
+            vp = "fullcombo";
+            this.playSound("v_fullcombo", 1.350);
+        } else {
+            vp = "clear";
+        }
     } else {
-      vp = 'fail';
+        vp = "fail";
     }
 
-    if (vp && vp !== 'donderfullcombo') {
-      this.playSound('se_game' + vp);
+    if (vp && vp !== "donderfullcombo") {
+        this.playSound("se_game" + vp);
     }
-  }
+}
+
   displayResults() {
     if (this.multiplayer !== 2) {
       if (this.view.cursorHidden) {

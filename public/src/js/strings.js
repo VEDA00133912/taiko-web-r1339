@@ -312,6 +312,13 @@ var translations = {
     tw: '未登錄',
     ko: '로그인하지 않았습니다',
   },
+  autoPlaying: {
+    ja: "オートプレイ中",
+    en: "Auto-Play",
+    cn: "自动演奏",
+    tw: "自動演奏",
+    ko: "자동 재생"
+  },
   sessionStart: {
     ja: 'オンラインセッションを開始する！',
     en: 'Begin an Online Session!',

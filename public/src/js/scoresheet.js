@@ -533,6 +533,9 @@ class Scoresheet {
               : gameConfig.accounts && !p2.session
                 ? strings.notLoggedIn
                 : false;
+                if (this.controller.autoPlayEnabled && !this.multiplayer) {
+                  rank = strings.autoPlaying;
+                }    
           } else {
             var name = p2.name || defaultName;
             var rank = !p2.session

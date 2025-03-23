@@ -391,6 +391,9 @@
           : gameConfig.accounts && !p2.session
             ? strings.notLoggedIn
             : false;
+            if (this.controller.autoPlayEnabled && !this.multiplayer) {
+              rank = strings.autoPlaying;
+            }
       } else {
         var name = p2.name || strings.defaultName;
         var rank = false;
@@ -595,6 +598,9 @@
           : gameConfig.accounts && !p2.session
             ? strings.notLoggedIn
             : false;
+            if (this.controller.autoPlayEnabled && !this.multiplayer) {
+              rank = strings.autoPlaying;
+            }
       } else {
         var name = p2.name || strings.defaultName;
         var rank = false;

@@ -133,6 +133,7 @@ var assets = {
 
     'v_fullcombo.ogg',
     'v_donderfullcombo.ogg',
+    'v_meka_donderfulcombo.ogg',
     'v_renda.ogg',
     'v_results_fullcombo.ogg',
     'v_results_fullcombo2.ogg',
