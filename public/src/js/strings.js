@@ -109,6 +109,20 @@ var translations = {
     tw: '遊戲設定',
     ko: '게임 설정',
   },
+  setting: {
+    ja: "設定",
+    en: "Settings",
+    cn: "设定",
+    tw: "設定",
+    ko: "설정",
+  },
+  sousaku: {
+    ja: "創作譜面",
+    en: "custom songs",
+    cn: "自定义歌曲",
+    tw: "自定義歌曲",
+    ko: "커스텀 노래",
+  },
   sourceCode: {
     ja: 'ソースコード',
     en: 'Source Code',
@@ -122,6 +136,13 @@ var translations = {
     cn: '上传歌曲',
     tw: '上傳歌曲',
     ko: '노래 업로드',
+  },
+  customMenu: {
+    ja: "カスタム",
+    en: "custom",
+    cn: "自定义",
+    tw: "自定義",
+    ko: "사용자 지정",
   },
   titleSort: {
     ja: 'タイトル順に並べ替え',

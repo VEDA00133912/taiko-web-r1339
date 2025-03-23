@@ -157,6 +157,7 @@ class SongSelect {
         title: strings.back,
         skin: this.songSkin.back,
         action: 'back',
+        category: strings.back,
       });
       this.songs.push({
         title: strings.randomSong,
@@ -170,7 +171,7 @@ class SongSelect {
         title: strings.search.search,
         skin: this.songSkin.search,
         action: 'search',
-        category: strings.random,
+        category: strings.search.search,
         p2Enabled: true,
       });
     }
@@ -183,7 +184,7 @@ class SongSelect {
         title: strings.howToPlay,
         skin: this.songSkin.tutorial,
         action: 'tutorial',
-        category: strings.random,
+        category: strings.howToPlay,
       });
     }
     this.showWarning = showWarning;
@@ -194,13 +195,13 @@ class SongSelect {
       title: strings.aboutSimulator,
       skin: this.songSkin.about,
       action: 'about',
-      category: strings.random,
+      category: strings.setting,
     });
     this.songs.push({
       title: strings.gameSettings,
       skin: this.songSkin.settings,
       action: 'settings',
-      category: strings.random,
+      category: strings.setting,
     });
 
     var showCustom = false;
@@ -219,14 +220,22 @@ class SongSelect {
           : strings.customSongs.title,
         skin: this.songSkin.customSongs,
         action: 'customSongs',
-        category: strings.random,
+        category: strings.sousaku,
       });
     }
+
+    this.songs.push({
+      title: strings.uploader,
+      skin: this.songSkin.upload,
+      action: 'upload',
+      category: strings.sousaku,
+    });
+    
     this.songs.push({
       title: strings.plugins.title,
       skin: this.songSkin.plugins,
       action: 'plugins',
-      category: strings.random,
+      category: strings.plugins.title,
     });
 
     // カスタムメニュー
@@ -234,25 +243,23 @@ class SongSelect {
       title: strings.sourceCode,
       skin: this.songSkin.sourceCode,
       action: 'sourceCode',
+      category: strings.sourceCode,
     });
     // for (let i = 0; i < 10; i++) {
-    this.songs.push({
-      title: strings.uploader,
-      skin: this.songSkin.upload,
-      action: 'upload',
-    });
     // }
 
     this.songs.push({
       title: strings.titleSort,
       skin: this.songSkin.customSettings,
       action: 'titlesort',
+      category: strings.customMenu,
     });
 
     this.songs.push({
       title: strings.back,
       skin: this.songSkin.back,
       action: 'back',
+      category: strings.back,
     });
 
     this.songAsset = {
@@ -3380,18 +3387,18 @@ class SongSelect {
       var categoryName = song.category;
       var originalCategory = song.category;
     }
-    var addedSong = {
-      title: title,
-      originalTitle: song.title,
-      subtitle: subtitle,
-      skin: skin || this.songSkin.default,
-      originalCategory: originalCategory,
-      category: categoryName,
-      preview: song.preview || 0,
-      songSkin: song.song_skin || {},
-      canJump: true,
-      hash: song.hash || song.title,
-    };
+		var addedSong = {
+			title: title,
+			originalTitle: song.title,
+			subtitle: subtitle,
+			skin: skin || this.songSkin.default,
+			originalCategory: originalCategory,
+			category: categoryName || strings.sousaku,
+			preview: song.preview || 0,
+			songSkin: song.song_skin || {},
+			canJump: true,
+			hash: song.hash || song.title
+		}
     for (var i in song) {
       if (!(i in addedSong)) {
         addedSong[i] = song[i];
