@@ -59,37 +59,43 @@ class Controller {
     }
     this.offset = this.parsedSongData.soundOffset;
 
-    var maxCombo = this.parsedSongData.circles.filter(
-      (circle) =>
-        ['don', 'ka', 'daiDon', 'daiKa', 'green'].indexOf(circle.type) > -1 &&
-        (!circle.branch || circle.branch.name == 'master')
-    ).length;
-    if (maxCombo >= 50) {
-      var comboVoices = ['v_combo_50'].concat(
-        Array.from(
-          Array(Math.min(50, Math.floor(maxCombo / 100))),
-          (d, i) => 'v_combo_' + (i + 1) * 100
-        )
+    var maxCombo = this.parsedSongData.circles.filter(circle => 
+      ["don", "ka", "daiDon", "daiKa"].includes(circle.type) && 
+      (!circle.branch || circle.branch.name == "master")
+  ).length;
+  
+  if (maxCombo >= 50) {
+      var comboVoices = ["v_combo_50"].concat(
+          Array.from(Array(Math.min(50, Math.floor(maxCombo / 100))), 
+              (d, i) => "v_combo_" + ((i + 1) * 100)
+          )
       );
-      var promises = [];
+  
+      if (autoPlayEnabled) {
+        var mComboVoices = ["v_meka_combo_50"].concat(
+            Array.from(Array(Math.min(19, Math.floor(maxCombo / 100))), 
+                (d, i) => "v_meka_combo_" + ((i + 1) * 100)
+            )
+        );
+        mComboVoices.push("v_meka_combo_over");
 
-      comboVoices.forEach((name) => {
-        if (!assets.sounds[name + '_p1']) {
-          promises.push(
-            loader.loadSound(name + '.ogg', snd.sfxGain).then((sound) => {
-              assets.sounds[name + '_p1'] = assets.sounds[name].copy(
-                snd.sfxGainL
-              );
-              assets.sounds[name + '_p2'] = assets.sounds[name].copy(
-                snd.sfxGainR
-              );
-            })
-          );
-        }
-      });
-
-      Promise.all(promises);
+        comboVoices = comboVoices.concat(mComboVoices);
     }
+  
+      var promises = [];
+      comboVoices.forEach(name => {
+          if (!assets.sounds[name + "_p1"]) {
+              promises.push(
+                  loader.loadSound(name + ".ogg", snd.sfxGain).then(sound => {
+                      assets.sounds[name + "_p1"] = assets.sounds[name].copy(snd.sfxGainL);
+                      assets.sounds[name + "_p2"] = assets.sounds[name].copy(snd.sfxGainR);
+                  })
+              );
+          }
+      });
+  
+      Promise.all(promises);
+  }
 
     if (this.calibrationMode) {
       this.volume = 1;
