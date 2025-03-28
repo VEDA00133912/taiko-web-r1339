@@ -1223,9 +1223,9 @@ if (!this.multiplayer && settings.getItem("showBpm")) {
   
 // show HS
 if (!this.multiplayer && settings.getItem("showHs")) {
-  const hsPosition = settings.getItem("showBpm")
-      ? frameTop + (this.portrait ? 550 : 450)
-      : frameTop + (this.portrait ? 500 : 400);
+    const hsPosition = settings.getItem("showBpm")
+        ? frameTop + (this.portrait ? 550 : 450)
+        : frameTop + (this.portrait ? 500 : 400);
 
   const calculateHS = (beat, ms, measures, circles) => {
       const BPM = (1000 / beat) * 60;
@@ -2007,33 +2007,42 @@ if (!this.multiplayer && settings.getItem("showHs")) {
           );
         }
       } else if (type === 'drumroll' || type === 'daiDrumroll') {
-        fill = '#f3b500';
-        if (type == 'drumroll') {
-          size = circleSize;
-          faceID = noteFace.small;
-        } else {
-          size = bigCircleSize;
-          faceID = noteFace.big;
-        }
-        endX = this.msToPos(endTime - circleMs, speed);
-        drumroll = endX > 50 ? 2 : 1;
-
-        ctx.fillStyle = fill;
-        ctx.strokeStyle = '#000';
-        ctx.lineWidth = 3;
-        ctx.beginPath();
-        ctx.moveTo(circlePos.x, circlePos.y - size + 1.5);
-        ctx.arc(
-          circlePos.x + endX,
-          circlePos.y,
-          size - 1.5,
-          Math.PI / -2,
-          Math.PI / 2
-        );
-        ctx.lineTo(circlePos.x, circlePos.y + size - 1.5);
-        ctx.fill();
-        ctx.stroke();
-      }
+              fill = '#f3b500'; 
+          
+              if (circle.timesHit) {
+                  fill = '#ff0000'; 
+                  setTimeout(() => {
+                      circle.timesHit = false; 
+                  }, 1500); 
+              }
+          
+              if (type == 'drumroll') {
+                  size = circleSize;
+                  faceID = noteFace.small;
+              } else {
+                  size = bigCircleSize;
+                  faceID = noteFace.big;
+              }
+              
+              endX = this.msToPos(endTime - circleMs, speed);
+              drumroll = endX > 50 ? 2 : 1;
+          
+              ctx.fillStyle = fill;
+              ctx.strokeStyle = '#000';
+              ctx.lineWidth = 3;
+              ctx.beginPath();
+              ctx.moveTo(circlePos.x, circlePos.y - size + 1.5);
+              ctx.arc(
+                  circlePos.x + endX,
+                  circlePos.y,
+                  size - 1.5,
+                  Math.PI / -2,
+                  Math.PI / 2
+              );
+              ctx.lineTo(circlePos.x, circlePos.y + size - 1.5);
+              ctx.fill();
+              ctx.stroke();
+      }  
       if (!fade || fade < 1) {
         // Main circle
         ctx.fillStyle = fill;
