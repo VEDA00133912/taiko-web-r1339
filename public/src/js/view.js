@@ -852,7 +852,7 @@
     var glyph = 29;
     var pointsText = score.points.toString().split('');
 
-    ctx.translate(this.scorePos.x, this.scorePos.y);
+    ctx.translate(this.scorePos.x, this.scorePos.y + 3);
     ctx.scale(0.7, 1);
     for (var i in pointsText) {
       var x = glyph * (i - pointsText.length + 1);
