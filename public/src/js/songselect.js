@@ -230,7 +230,7 @@ class SongSelect {
       action: 'upload',
       category: strings.sousaku,
     });
-    
+
     this.songs.push({
       title: strings.plugins.title,
       skin: this.songSkin.plugins,
@@ -3387,18 +3387,18 @@ class SongSelect {
       var categoryName = song.category;
       var originalCategory = song.category;
     }
-		var addedSong = {
-			title: title,
-			originalTitle: song.title,
-			subtitle: subtitle,
-			skin: skin || this.songSkin.default,
-			originalCategory: originalCategory,
-			category: categoryName || strings.sousaku,
-			preview: song.preview || 0,
-			songSkin: song.song_skin || {},
-			canJump: true,
-			hash: song.hash || song.title
-		}
+    var addedSong = {
+      title: title,
+      originalTitle: song.title,
+      subtitle: subtitle,
+      skin: skin || this.songSkin.default,
+      originalCategory: originalCategory,
+      category: categoryName || strings.sousaku,
+      preview: song.preview || 0,
+      songSkin: song.song_skin || {},
+      canJump: true,
+      hash: song.hash || song.title,
+    };
     for (var i in song) {
       if (!(i in addedSong)) {
         addedSong[i] = song[i];

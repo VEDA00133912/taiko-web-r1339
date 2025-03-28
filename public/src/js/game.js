@@ -19,6 +19,7 @@ class Game {
       bad: 0,
       maxCombo: 0,
       drumroll: 0,
+      balloon: 0,
       gauge: 0,
       adlib: 0,
       adlibTotal: 0,
@@ -532,6 +533,7 @@ class Game {
     this.globalScore.points += score;
     this.view.setDarkBg(false);
   }
+
   checkDrumroll(circle, keysKa) {
     var ms = this.elapsedTime;
     var dai = circle.type === 'daiDrumroll';
@@ -792,7 +794,11 @@ class Game {
       (this.combo > 0 && this.combo % 100 === 0 && this.combo <= 5000)
     ) {
       if (this.controller.autoPlayEnabled) {
-        this.controller.playSound(this.combo >= 2000 ? 'v_meka_combo_over' : 'v_meka_combo_' + this.combo);
+        this.controller.playSound(
+          this.combo >= 2000
+            ? 'v_meka_combo_over'
+            : 'v_meka_combo_' + this.combo
+        );
       } else {
         this.controller.playSound('v_combo_' + this.combo);
       }

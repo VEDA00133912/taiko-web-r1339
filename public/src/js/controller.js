@@ -59,43 +59,50 @@ class Controller {
     }
     this.offset = this.parsedSongData.soundOffset;
 
-    var maxCombo = this.parsedSongData.circles.filter(circle => 
-      ["don", "ka", "daiDon", "daiKa"].includes(circle.type) && 
-      (!circle.branch || circle.branch.name == "master")
-  ).length;
-  
-  if (maxCombo >= 50) {
-      var comboVoices = ["v_combo_50"].concat(
-          Array.from(Array(Math.min(50, Math.floor(maxCombo / 100))), 
-              (d, i) => "v_combo_" + ((i + 1) * 100)
-          )
+    var maxCombo = this.parsedSongData.circles.filter(
+      (circle) =>
+        ['don', 'ka', 'daiDon', 'daiKa'].includes(circle.type) &&
+        (!circle.branch || circle.branch.name == 'master')
+    ).length;
+
+    if (maxCombo >= 50) {
+      var comboVoices = ['v_combo_50'].concat(
+        Array.from(
+          Array(Math.min(50, Math.floor(maxCombo / 100))),
+          (d, i) => 'v_combo_' + (i + 1) * 100
+        )
       );
-  
+
       if (autoPlayEnabled) {
-        var mComboVoices = ["v_meka_combo_50"].concat(
-            Array.from(Array(Math.min(19, Math.floor(maxCombo / 100))), 
-                (d, i) => "v_meka_combo_" + ((i + 1) * 100)
-            )
+        var mComboVoices = ['v_meka_combo_50'].concat(
+          Array.from(
+            Array(Math.min(19, Math.floor(maxCombo / 100))),
+            (d, i) => 'v_meka_combo_' + (i + 1) * 100
+          )
         );
-        mComboVoices.push("v_meka_combo_over");
+        mComboVoices.push('v_meka_combo_over');
 
         comboVoices = comboVoices.concat(mComboVoices);
-    }
-  
+      }
+
       var promises = [];
-      comboVoices.forEach(name => {
-          if (!assets.sounds[name + "_p1"]) {
-              promises.push(
-                  loader.loadSound(name + ".ogg", snd.sfxGain).then(sound => {
-                      assets.sounds[name + "_p1"] = assets.sounds[name].copy(snd.sfxGainL);
-                      assets.sounds[name + "_p2"] = assets.sounds[name].copy(snd.sfxGainR);
-                  })
+      comboVoices.forEach((name) => {
+        if (!assets.sounds[name + '_p1']) {
+          promises.push(
+            loader.loadSound(name + '.ogg', snd.sfxGain).then((sound) => {
+              assets.sounds[name + '_p1'] = assets.sounds[name].copy(
+                snd.sfxGainL
               );
-          }
+              assets.sounds[name + '_p2'] = assets.sounds[name].copy(
+                snd.sfxGainR
+              );
+            })
+          );
+        }
       });
-  
+
       Promise.all(promises);
-  }
+    }
 
     if (this.calibrationMode) {
       this.volume = 1;
@@ -275,29 +282,28 @@ class Controller {
     var vp;
 
     if (this.game.rules.clearReached(score.gauge)) {
-        if (score.ok === 0 && score.bad === 0) {
-            vp = "donderfullcombo";
+      if (score.ok === 0 && score.bad === 0) {
+        vp = 'donderfullcombo';
 
-            if (this.autoPlayEnabled) {
-                this.playSound("v_meka_donderfulcombo", 0.050);
-            } else {
-                this.playSound("v_donderfullcombo", 0.050);
-            }
-
-        } else if (score.bad === 0) {
-            vp = "fullcombo";
-            this.playSound("v_fullcombo", 1.350);
+        if (this.autoPlayEnabled) {
+          this.playSound('v_meka_donderfulcombo', 0.05);
         } else {
-            vp = "clear";
+          this.playSound('v_donderfullcombo', 0.05);
         }
+      } else if (score.bad === 0) {
+        vp = 'fullcombo';
+        this.playSound('v_fullcombo', 1.35);
+      } else {
+        vp = 'clear';
+      }
     } else {
-        vp = "fail";
+      vp = 'fail';
     }
 
-    if (vp && vp !== "donderfullcombo") {
-        this.playSound("se_game" + vp);
+    if (vp && vp !== 'donderfullcombo') {
+      this.playSound('se_game' + vp);
     }
-}
+  }
 
   displayResults() {
     if (this.multiplayer !== 2) {
@@ -515,9 +521,9 @@ class Controller {
     if (!this.mods) {
       return [];
     }
-  
+
     let badges = [];
-  
+
     if (this.mods.speed > 1) {
       badges.push('badge_x' + this.mods.speed.toString());
     }
@@ -535,7 +541,7 @@ class Controller {
       this.saveScore = false;
       badges.push('badge_kat');
     }
-  
+
     return badges;
-  }  
+  }
 }

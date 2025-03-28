@@ -533,9 +533,9 @@ class Scoresheet {
               : gameConfig.accounts && !p2.session
                 ? strings.notLoggedIn
                 : false;
-                if (this.controller.autoPlayEnabled && !this.multiplayer) {
-                  rank = strings.autoPlaying;
-                }    
+            if (this.controller.autoPlayEnabled && !this.multiplayer) {
+              rank = strings.autoPlaying;
+            }
           } else {
             var name = p2.name || defaultName;
             var rank = !p2.session
@@ -572,12 +572,12 @@ class Scoresheet {
           if (this.controller.autoPlayEnabled) {
             badge_names.push('badge_auto');
           }
-          
+
           const badgeSize = 34;
-          const badgeSpace = 1; 
+          const badgeSpace = 1;
           const startX = 431;
           const startY = 311;
-          
+
           badge_names.forEach((badge, index) => {
             if (assets.image[badge]) {
               ctx.drawImage(
@@ -588,9 +588,9 @@ class Scoresheet {
                 badgeSize
               );
             } else {
-              console.warn("Image not found for badge:", badge);
+              console.warn('Image not found for badge:', badge);
             }
-          });          
+          });
 
           this.draw.roundedRect({
             ctx: ctx,

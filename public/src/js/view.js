@@ -391,9 +391,9 @@
           : gameConfig.accounts && !p2.session
             ? strings.notLoggedIn
             : false;
-            if (this.controller.autoPlayEnabled && !this.multiplayer) {
-              rank = strings.autoPlaying;
-            }
+        if (this.controller.autoPlayEnabled && !this.multiplayer) {
+          rank = strings.autoPlaying;
+        }
       } else {
         var name = p2.name || strings.defaultName;
         var rank = false;
@@ -512,12 +512,12 @@
       if (this.controller.autoPlayEnabled && !this.multiplayer) {
         badge_names.push('badge_auto');
       }
-      
+
       const badgeSize = 23;
       const badgeSpace = 1;
       const startX = 183;
       const startY = this.player === 2 ? 490 : 265;
-      
+
       badge_names.forEach((badge, index) => {
         if (assets.image[badge]) {
           this.ctx.drawImage(
@@ -528,7 +528,7 @@
             badgeSize
           );
         } else {
-          console.warn("Image not found for badge:", badge);
+          console.warn('Image not found for badge:', badge);
         }
       });
 
@@ -609,9 +609,9 @@
           : gameConfig.accounts && !p2.session
             ? strings.notLoggedIn
             : false;
-            if (this.controller.autoPlayEnabled && !this.multiplayer) {
-              rank = strings.autoPlaying;
-            }
+        if (this.controller.autoPlayEnabled && !this.multiplayer) {
+          rank = strings.autoPlaying;
+        }
       } else {
         var name = p2.name || strings.defaultName;
         var rank = false;
@@ -735,29 +735,29 @@
       }
 
       // Badges
-      let badge_names = this.controller.getModBadge(); 
+      let badge_names = this.controller.getModBadge();
       if (this.controller.autoPlayEnabled && !this.multiplayer) {
         badge_names.push('badge_auto');
       }
-      
+
       const badgeSize = 34;
-      const badgeSpace = 1; 
+      const badgeSpace = 1;
       const startX = 125;
       const startY = 235;
-      
+
       badge_names.forEach((badge, index) => {
         if (assets.image[badge]) {
           this.ctx.drawImage(
-            assets.image[badge], 
-            startX - index * (badgeSize + badgeSpace), 
-            startY, 
-            badgeSize, 
+            assets.image[badge],
+            startX - index * (badgeSize + badgeSpace),
+            startY,
+            badgeSize,
             badgeSize
           );
         } else {
-          console.warn("Image not found for badge:", badge);
+          console.warn('Image not found for badge:', badge);
         }
-      });      
+      });
 
       // Score background
       ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
@@ -1202,73 +1202,79 @@
       this.assets.drawAssets('foreground');
     }
 
-// Show BPM
-if (!this.multiplayer && settings.getItem("showBpm")) {
-  const bpm = (1000 / this.beatInterval * 60).toFixed(3);
+    // Show BPM
+    if (!this.multiplayer && settings.getItem('showBpm')) {
+      const bpm = ((1000 / this.beatInterval) * 60).toFixed(3);
 
-  this.draw.layeredText(
-      {
-          ctx, 
+      this.draw.layeredText(
+        {
+          ctx,
           text: `BPM: ${bpm}`,
-          fontSize: 30, 
-          fontFamily: this.font, 
-          x: 30, 
-          y: frameTop + (this.portrait ? 500 : 400), 
-          width: 600, 
-          align: "left"
-      },
-      [{ outline: "#000", letterBorder: 10 }, { fill: "#fff" }]
-  );
-}
-  
-// show HS
-if (!this.multiplayer && settings.getItem("showHs")) {
-    const hsPosition = settings.getItem("showBpm")
+          fontSize: 30,
+          fontFamily: this.font,
+          x: 30,
+          y: frameTop + (this.portrait ? 500 : 400),
+          width: 600,
+          align: 'left',
+        },
+        [{ outline: '#000', letterBorder: 10 }, { fill: '#fff' }]
+      );
+    }
+
+    // show HS
+    if (!this.multiplayer && settings.getItem('showHs')) {
+      const hsPosition = settings.getItem('showBpm')
         ? frameTop + (this.portrait ? 550 : 450)
         : frameTop + (this.portrait ? 500 : 400);
 
-  const calculateHS = (beat, ms, measures, circles) => {
-      const BPM = (1000 / beat) * 60;
+      const calculateHS = (beat, ms, measures, circles) => {
+        const BPM = (1000 / beat) * 60;
 
-      const findCurrentIndex = (data, key) => {
+        const findCurrentIndex = (data, key) => {
           let index = -2;
           for (let i = 0; i < data.length; i++) {
-              index++;
-              if (ms < data[i][key]) break;
+            index++;
+            if (ms < data[i][key]) break;
           }
           return Math.max(index, 0);
-      };
+        };
 
-      const nowBar = findCurrentIndex(measures, "ms");
-      const nowCir = findCurrentIndex(circles, "originalMS");
+        const nowBar = findCurrentIndex(measures, 'ms');
+        const nowCir = findCurrentIndex(circles, 'originalMS');
 
-      const currentSpeed = nowCir < 0
-          ? measures[nowBar].speed
-          : measures[nowBar].ms > circles[nowCir].originalMS
+        const currentSpeed =
+          nowCir < 0
+            ? measures[nowBar].speed
+            : measures[nowBar].ms > circles[nowCir].originalMS
               ? measures[nowBar].speed
               : circles[nowCir].speed;
 
-      return ((currentSpeed / BPM) * 60).toFixed(3);
-  };
+        return ((currentSpeed / BPM) * 60).toFixed(3);
+      };
 
-  const measures = this.controller.parsedSongData.measures;
-  const circles = this.controller.getCircles();
-  const hsValue = calculateHS(this.beatInterval, this.ms, measures, circles);
+      const measures = this.controller.parsedSongData.measures;
+      const circles = this.controller.getCircles();
+      const hsValue = calculateHS(
+        this.beatInterval,
+        this.ms,
+        measures,
+        circles
+      );
 
-  this.draw.layeredText({
-      ctx: ctx,
-      text: `HS : ${hsValue}`,
-      fontSize: 30,
-      fontFamily: this.font,
-      x: 30,
-      y: hsPosition,
-      width: 600,
-      align: "left"
-  }, [
-      { outline: "#000", letterBorder: 10 },
-      { fill: "#fff" }
-  ]);
-}
+      this.draw.layeredText(
+        {
+          ctx: ctx,
+          text: `HS : ${hsValue}`,
+          fontSize: 30,
+          fontFamily: this.font,
+          x: 30,
+          y: hsPosition,
+          width: 600,
+          align: 'left',
+        },
+        [{ outline: '#000', letterBorder: 10 }, { fill: '#fff' }]
+      );
+    }
     // Pause screen
     if (!this.multiplayer && this.controller.game.paused) {
       ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
@@ -1993,6 +1999,7 @@ if (!this.multiplayer && settings.getItem("showHs")) {
             ms <= endTime + this.controller.audioLatency
           ) {
             circlePos.x = this.slotPos.x;
+            console.log(circle.requiredHits - circle.timesHit);
           } else if (ms > endTime + this.controller.audioLatency) {
             circlePos.x =
               this.slotPos.x +
@@ -2007,42 +2014,42 @@ if (!this.multiplayer && settings.getItem("showHs")) {
           );
         }
       } else if (type === 'drumroll' || type === 'daiDrumroll') {
-              fill = '#f3b500'; 
-          
-              if (circle.timesHit) {
-                  fill = '#ff0000'; 
-                  setTimeout(() => {
-                      circle.timesHit = false; 
-                  }, 1500); 
-              }
-          
-              if (type == 'drumroll') {
-                  size = circleSize;
-                  faceID = noteFace.small;
-              } else {
-                  size = bigCircleSize;
-                  faceID = noteFace.big;
-              }
-              
-              endX = this.msToPos(endTime - circleMs, speed);
-              drumroll = endX > 50 ? 2 : 1;
-          
-              ctx.fillStyle = fill;
-              ctx.strokeStyle = '#000';
-              ctx.lineWidth = 3;
-              ctx.beginPath();
-              ctx.moveTo(circlePos.x, circlePos.y - size + 1.5);
-              ctx.arc(
-                  circlePos.x + endX,
-                  circlePos.y,
-                  size - 1.5,
-                  Math.PI / -2,
-                  Math.PI / 2
-              );
-              ctx.lineTo(circlePos.x, circlePos.y + size - 1.5);
-              ctx.fill();
-              ctx.stroke();
-      }  
+        fill = '#f3b500';
+
+        if (circle.timesHit) {
+          fill = '#ff0000';
+          setTimeout(() => {
+            circle.timesHit = false;
+          }, 1500);
+        }
+
+        if (type == 'drumroll') {
+          size = circleSize;
+          faceID = noteFace.small;
+        } else {
+          size = bigCircleSize;
+          faceID = noteFace.big;
+        }
+
+        endX = this.msToPos(endTime - circleMs, speed);
+        drumroll = endX > 50 ? 2 : 1;
+
+        ctx.fillStyle = fill;
+        ctx.strokeStyle = '#000';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(circlePos.x, circlePos.y - size + 1.5);
+        ctx.arc(
+          circlePos.x + endX,
+          circlePos.y,
+          size - 1.5,
+          Math.PI / -2,
+          Math.PI / 2
+        );
+        ctx.lineTo(circlePos.x, circlePos.y + size - 1.5);
+        ctx.fill();
+        ctx.stroke();
+      }
       if (!fade || fade < 1) {
         // Main circle
         ctx.fillStyle = fill;
