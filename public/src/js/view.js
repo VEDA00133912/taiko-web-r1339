@@ -2015,12 +2015,11 @@
         }
       } else if (type === 'drumroll' || type === 'daiDrumroll') {
         fill = '#f3b500';
-
         if (circle.timesHit) {
           fill = '#ff0000';
           setTimeout(() => {
-            circle.timesHit = false;
-          }, 1500);
+            fill = "f3b500";
+          }, 1000);
         }
 
         if (type == 'drumroll') {

@@ -534,23 +534,27 @@ class Game {
     var dai = circle.type === 'daiDrumroll';
     var score = 100;
     if (circle.section && circle.timesHit === 0) {
-      this.resetSection();
+        this.resetSection();
     }
     circle.hit(keysKa);
+
+    // 連打ノーツが叩かれた際にコンソールに表示
+    console.log(`連打ノーツが叩かれました: timesHit=${circle.timesHit}, type=${circle.type}`);
+
     var keyTime = this.controller.getKeyTime();
     if (circle.type === 'drumroll') {
-      var sound = keyTime['don'] > keyTime['ka'] ? 'don' : 'ka';
+        var sound = keyTime['don'] > keyTime['ka'] ? 'don' : 'ka';
     } else {
-      var sound = keyTime['don'] > keyTime['ka'] ? 'daiDon' : 'daiKa';
+        var sound = keyTime['don'] > keyTime['ka'] ? 'daiDon' : 'daiKa';
     }
     var circleAnim = new Circle({
-      id: 0,
-      start: ms,
-      type: sound,
-      txt: '',
-      speed: circle.speed,
-      gogoTime: circle.gogoTime,
-      fixedPos: document.hasFocus(),
+        id: 0,
+        start: ms,
+        type: sound,
+        txt: '',
+        speed: circle.speed,
+        gogoTime: circle.gogoTime,
+        fixedPos: document.hasFocus(),
     });
     circleAnim.played(score, dai);
     circleAnim.animate(ms);
@@ -559,7 +563,7 @@ class Game {
     this.sectionDrumroll++;
     this.globalScore.points += score * (dai ? 2 : 1);
     this.view.setDarkBg(false);
-  }
+}
   getLastCircle(circles) {
     for (var i = circles.length; i--; ) {
       return circles[i];
