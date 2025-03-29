@@ -170,6 +170,19 @@ button:hover {
   background-color: #45a049;
 }
 
-#error-view {
-  color: red;
+#log-area {
+  width: 80%;
+  max-width: 600px;
+  height: 200px;
+  background-color: rgb(57, 57, 57);
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  padding: 10px;
+  overflow-y: auto;
+  font-size: 16px;
+  font-family: "TnT", sans-serif;
+  color: white;
+  white-space: pre-wrap;
+  word-break: break-word;
+  line-height: 1.5;
 }

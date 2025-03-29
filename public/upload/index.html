@@ -10,10 +10,7 @@
   </head>
   <body>
     <h1>太鼓ウェブ 譜面あっぷろーだー</h1>
-    <p>
-      このページのデザインは現在PC, タブレットにのみ対応しています<br /><br />
-      (まだなんもしてないんでスマホだと見づらくなってると思います..)
-    </p>
+    <p>このページのデザインは現在PC, タブレットにのみ対応しています</p>
 
     <form
       id="upload-form"
@@ -50,14 +47,12 @@
       </div>
     </form>
 
-    <button type="button" onclick="uploadFiles()">
-      今すぐアップロード！<br />(30秒ほどで完了します)
+    <button type="button" onclick="uploadFiles()">ここをクリックして譜面をアップロード！<br/>(30秒ほどで完了します)
     </button>
-
+    <div id="log-area"></div>
+    
     <h1>この譜面あっぷろーだーの使い方</h1>
     <p>1: TJAファイル、音源ファイルをそれぞれ選択</p>
     <p>2: ボタンを押して太鼓ウェブにアップロード！</p>
-
-    <div id="error-view"></div>
   </body>
 </html>

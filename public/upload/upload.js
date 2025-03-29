@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
+  document.querySelector("#log-area").textContent = "ここにはログが表示されます";
   const fileInputs = document.querySelectorAll("input[type='file']");
 
   fileInputs.forEach((input, index) => {
@@ -27,6 +28,22 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 });
+
+function logMessage(message, type = "error") {
+  const logArea = document.querySelector("#log-area");
+  const logEntry = document.createElement("div");
+
+  if (type === "success") {
+    logEntry.style.color = "#32CD32"; 
+  } else {
+    logEntry.style.color = "red";
+  }
+
+  logEntry.textContent = message;
+  logArea.appendChild(logEntry);
+
+  logArea.scrollTop = logArea.scrollHeight;
+}
 
 function uploadFiles() {
   fetch("/api/csrftoken")
@@ -60,13 +77,13 @@ function uploadFiles() {
     })
     .then((data) => {
       if (data.success) {
-        alert("譜面の投稿に成功しました！");
+        logMessage("譜面の投稿に成功しました！", "success");
       } else {
         throw new Error(data.error);
       }
     })
     .catch((error) => {
       console.error("エラー:", error);
-      document.querySelector("#error-view").textContent = error;
+      logMessage(error.message || "不明なエラーが発生しました。");
     });
 }
