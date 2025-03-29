@@ -854,7 +854,7 @@
 
     ctx.translate(this.scorePos.x, this.scorePos.y + 3);
     ctx.scale(0.7, 1);
-    for (var i in pointsText) {
+    for (var i in pointsText) { 
       var x = glyph * (i - pointsText.length + 1);
       ctx.strokeText(pointsText[i], x, 0);
       ctx.fillText(pointsText[i], x, 0);

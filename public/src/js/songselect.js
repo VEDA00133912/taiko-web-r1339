@@ -88,6 +88,12 @@ class SongSelect {
         border: ['#81c784', '#66bb6a'],
         outline: '#388e3c',
       },
+      sousaku: {
+        sort: null,
+        background: '#68eab3',
+        border: ['#55d9c2', '#43c8d2'],
+        outline: '#33b8e0',
+      },
       default: {
         sort: null,
         background: '#ececec',
@@ -3090,19 +3096,10 @@ class SongSelect {
     }
   }
 
-  drawBackground(cat) {
-    if (this.songSkin[cat] && this.songSkin[cat].bg_img) {
-      let filename = this.songSkin[cat].bg_img.slice(
-        0,
-        this.songSkin[cat].bg_img.lastIndexOf('.')
-      );
-      this.songSelect.style.backgroundImage =
-        "url('" + assets.image[filename].src + "')";
-    } else {
-      this.songSelect.style.backgroundImage =
+  drawBackground() {
+    this.songSelect.style.backgroundImage =
         "url('" + assets.image['bg_genre_def'].src + "')";
-    }
-  }
+}
 
   drawClosedSong(config) {
     var ctx = config.ctx;
@@ -3391,7 +3388,7 @@ class SongSelect {
       title: title,
       originalTitle: song.title,
       subtitle: subtitle,
-      skin: skin || this.songSkin.default,
+      skin: skin || this.songSkin.sousaku,
       originalCategory: originalCategory,
       category: categoryName || strings.sousaku,
       preview: song.preview || 0,
