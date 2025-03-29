@@ -132,6 +132,7 @@ var assets = {
     'se_results_countup.ogg',
     'se_results_crown.ogg',
 
+    'v_tutorial.ogg',
     'v_fullcombo.ogg',
     'v_donderfullcombo.ogg',
     'v_meka_donderfulcombo.ogg',

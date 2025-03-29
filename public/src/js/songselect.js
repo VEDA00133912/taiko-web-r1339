@@ -303,13 +303,6 @@ class SongSelect {
         iconFill: '#e7cbe1',
         letterSpacing: 4,
       },
-      {
-        text: strings.delete,
-        fill: 'silver',
-        iconName: 'trash',
-        iconFill: '#111111',
-        letterSpacing: 4,
-      },
     ];
     this.optionsList = [
       strings.none,
@@ -617,8 +610,6 @@ class SongSelect {
           this.toSongSelect();
         } else if (this.selectedDiff === 2) {
           this.toDownload();
-        } else if (this.selectedDiff === 3) {
-          this.toDelete();
         } else if (this.selectedDiff === 1) {
           this.toOptions(1);
         } else {

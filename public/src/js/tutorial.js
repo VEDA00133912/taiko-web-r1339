@@ -6,6 +6,7 @@ class Tutorial {
     this.fromSongSel = fromSongSel;
     this.songId = songId;
     loader.changePage('tutorial', true);
+    assets.sounds['v_tutorial'].play();
     assets.sounds['bgm_setsume'].playLoop(0.1, false, 0, 1.054, 16.054);
     this.endButton = this.getElement('view-end-button');
 
