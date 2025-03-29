@@ -24,7 +24,7 @@ export default class Plugin extends Patch {
         return '';
       }),
       new EditFunction(View.prototype, 'refresh').load((str) => {
-        return plugins.strReplace(str, 'this.assets.drawAssets("notes")', '');
+        return plugins.strReplace(str, "this.assets.drawAssets('notes')", "");
       })
     );
   }

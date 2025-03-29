@@ -44,7 +44,7 @@ export default class Plugin extends Patch {
         return plugins.insertBefore(
           str,
           `this.touchButtons = document.getElementById("touch-buttons")
-          if(!this.controller.touchEnabled){
+          if (!this.controller.touchEnabled) {
             this.touchButtons.style.display = "block"
             document.getElementById("touch-full-btn").style.display = "none"
             document.getElementById("touch-pause-btn").style.display = "none"
@@ -54,13 +54,13 @@ export default class Plugin extends Patch {
           pageEvents.add(this.debugButton, ["click", "touchend"], debug)
           this.touchButtons.insertBefore(this.debugButton, this.touchButtons.firstChild)
           `,
-          'if(this.controller.touchEnabled){'
+          'if (this.controller.touchEnabled) {'
         );
       }),
       new EditFunction(View.prototype, 'clean').load((str) => {
         return plugins.insertAfter(
           str,
-          'if(this.multiplayer !== 2){',
+          'if (this.multiplayer !== 2) {',
           `
           pageEvents.remove(this.debugButton, ["click", "touchend"])
           this.touchButtons.removeChild(this.debugButton)

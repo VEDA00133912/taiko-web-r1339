@@ -10,7 +10,7 @@ export default class Plugin extends Patch {
   version = '22.02.22';
   description = 'Replaces the judge score with the accuracy in milliseconds';
   description_lang = {
-    ja: '判定点数をミリ秒単位の精度に置き換えます',
+    ja: '判定をミリ秒単位の精度に置き換えます',
     en: 'Replaces the judge score with the accuracy in milliseconds',
     cn: '用毫秒精度替换判定分数',
     tw: '用毫秒精度取代判定分數',

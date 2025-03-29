@@ -299,12 +299,7 @@ class Game {
     if (circle.section) {
       this.resetSection();
     }
-    circle.played(
-      -1,
-      circle.type === 'daiDon' ||
-        circle.type === 'daiKa' ||
-        circle.type === 'green'
-    );
+    circle.played(-1, circle.type === 'daiDon' || circle.type === 'daiKa' || circle.type === 'green');
     if (circle.type !== 'adlib') {
       this.sectionNotes.push(0);
       this.controller.displayScore(0, true);
@@ -668,11 +663,7 @@ class Game {
           );
         }
       } else if (this.controller.multiplayer !== 2 && this.mainAsset) {
-        this.mainAsset.play(
-          (ms < 0 ? -ms : 0) / 1000,
-          false,
-          Math.max(0, ms / 1000)
-        );
+        this.mainAsset.play((ms < 0 ? -ms : 0) / 1000, false, Math.max(0, ms / 1000));
       }
       this.mainMusicPlaying = true;
     }

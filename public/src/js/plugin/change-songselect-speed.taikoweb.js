@@ -54,7 +54,7 @@ export default class Plugin extends Patch {
   load() {
     this.addEdits(
       new EditFunction(SongSelect.prototype, 'init').load((str) => {
-        return plugins.insertAfter(str, 'speed: 400', `/ this.getSelectRate()`);
+        return plugins.insertAfter(str, 'speed: 600', `/ this.getSelectRate()`);
       }),
       new EditValue(SongSelect.prototype, 'getSelectRate').load(() =>
         this.getSelectRate.bind(this)
