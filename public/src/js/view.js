@@ -1986,32 +1986,58 @@
         faceID = noteFace.big;
       } else if (type === 'balloon') {
         if (animated) {
-          fill = '#f34728';
-          size = bigCircleSize * 0.8;
-          faceID = noteFace.big;
+            fill = '#f34728';
+            size = bigCircleSize * 0.8;
+            faceID = noteFace.big;
         } else {
-          fill = '#f87700';
-          size = circleSize;
-          faceID = noteFace.small;
-          var h = size * 1.8;
-          if (
-            circleMs + this.controller.audioLatency < ms &&
-            ms <= endTime + this.controller.audioLatency
-          ) {
-            circlePos.x = this.slotPos.x;
-            console.log(circle.requiredHits - circle.timesHit);
-          } else if (ms > endTime + this.controller.audioLatency) {
-            circlePos.x =
-              this.slotPos.x +
-              this.msToPos(endTime - ms + this.controller.audioLatency, speed);
-          }
-          ctx.drawImage(
-            assets.image['balloon'],
-            circlePos.x + size - 4,
-            circlePos.y - h / 2 + 2,
-            (h / 61) * 115,
-            h
-          );
+            fill = '#f87700';
+            size = circleSize;
+            faceID = noteFace.small;
+            var h = size * 1.8;
+    
+            if (
+                circleMs + this.controller.audioLatency < ms &&
+                ms <= endTime + this.controller.audioLatency
+            ) {
+                circlePos.x = this.slotPos.x;
+    
+                const remainingHits = circle.requiredHits - circle.timesHit;
+    
+                ctx.drawImage(
+                    assets.image['balloon_count'],
+                    circlePos.x - size / 2, 
+                    circlePos.y - h / 2 - 180, 
+                    240, 
+                    160 
+                );
+    
+                ctx.font = '50px TnT';
+                ctx.lineWidth = 10;
+                ctx.strokeStyle = '#000000';
+                ctx.fillStyle = '#FFFFFF';
+                ctx.textAlign = 'center';
+                ctx.miterLimit = 1
+                
+                const text = remainingHits.toString();
+                const x = circlePos.x + 103;
+                const y = circlePos.y - h / 2 - 105;
+                
+                ctx.strokeText(text, x, y);
+                ctx.fillText(text, x, y);
+                
+            } else if (ms > endTime + this.controller.audioLatency) {
+                circlePos.x =
+                    this.slotPos.x +
+                    this.msToPos(endTime - ms + this.controller.audioLatency, speed);
+            }
+    
+            ctx.drawImage(
+                assets.image['balloon'],
+                circlePos.x + size - 4,
+                circlePos.y - h / 2 + 2,
+                (h / 61) * 115,
+                h
+            );
         }
       } else if (type === 'drumroll' || type === 'daiDrumroll') {
         fill = '#f3b500';
