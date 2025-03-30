@@ -2074,6 +2074,32 @@
         ctx.lineTo(circlePos.x, circlePos.y + size - 1.5);
         ctx.fill();
         ctx.stroke();
+        if (circle.timesHit > 0) {
+          const remainingHits = circle.timesHit; 
+          const h = size * 1.8;
+      
+          const fixedX = this.slotPos.x; 
+          const fixedY = this.slotPos.y - h / 2 - 180; 
+      
+          ctx.drawImage(
+              assets.image['renda_count'],
+              fixedX - size / 2,
+              fixedY,
+              240,
+              160
+          );
+      
+          ctx.font = '50px TnT';
+          ctx.fillStyle = '#000000';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+      
+          const text = remainingHits.toString();
+          const textX = fixedX + 110; 
+          const textY = fixedY + 75; 
+      
+          ctx.fillText(text, textX, textY);
+      }
       }
       if (!fade || fade < 1) {
         // Main circle
