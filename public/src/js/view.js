@@ -1195,7 +1195,6 @@
 
     // Animating notes
     this.drawAnimatedCircles(this.controller.getCircles());
-    this.drawAnimatedCircles(this.drumroll);
 
     // Go-go time fireworks
     if (!this.touchEnabled && !this.portrait && !this.multiplayer) {
@@ -2074,11 +2073,12 @@
         ctx.lineTo(circlePos.x, circlePos.y + size - 1.5);
         ctx.fill();
         ctx.stroke();
+        this.drawAnimatedCircles(this.drumroll); // 画像と被るから連打用のdrawAnimatedCirclesはここに移動
         if (circle.timesHit > 0) {
           const remainingHits = circle.timesHit; 
           const h = size * 1.8;
       
-          const fixedX = this.slotPos.x; 
+          const fixedX = this.slotPos.x - 80; 
           const fixedY = this.slotPos.y - h / 2 - 180; 
       
           ctx.drawImage(
@@ -2095,7 +2095,7 @@
           ctx.textBaseline = 'middle';
       
           const text = remainingHits.toString();
-          const textX = fixedX + 110; 
+          const textX = fixedX + 100; 
           const textY = fixedY + 75; 
       
           ctx.fillText(text, textX, textY);
