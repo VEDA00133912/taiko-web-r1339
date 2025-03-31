@@ -849,7 +849,7 @@
     ctx.lineWidth = 8;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'top';
-    var glyph = 29;
+    var glyph = 26;
     var pointsText = score.points.toString().split('');
 
     ctx.translate(this.scorePos.x, this.scorePos.y + 3);

@@ -539,8 +539,6 @@ class Game {
     circle.hit(keysKa);
 
     // 連打ノーツが叩かれた際にコンソールに表示
-    console.log(`連打ノーツが叩かれました: timesHit=${circle.timesHit}, type=${circle.type}`);
-
     var keyTime = this.controller.getKeyTime();
     if (circle.type === 'drumroll') {
         var sound = keyTime['don'] > keyTime['ka'] ? 'don' : 'ka';
